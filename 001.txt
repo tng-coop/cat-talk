@@ -1,0 +1,75 @@
+Monad is a Monoid in Category of Endofunctors
+
+  -- Object = Functor
+  -- Morphism = Nat Trans
+
+Nat Trans (general)
+  -- Functors F G
+  -- Same destination Catgory D
+  alpha_y (F f) (F x) = G alpha_x (F x) 
+  
+Nat Trans (endo)
+  -- Functors F G
+  -- Same destination Catgory C
+  alpha_y (F f) (F x) = G alpha_x (F x) 
+
+NT "mu"
+  -- TT -> T
+
+NT "eta"
+  -- Id -> T
+
+TTT is either
+
+Begin Proof of TTT => T
+========================
+
+case1)
+mu is nat trans         :  TT => T
+L-whisk mu is a nattran :T TT => T T
+V-compose              : T TT => T
+
+
+case2)
+mu is nat trans         :  TT => T
+R-whisk mu is a nattran :TT T => T T
+V-compose              : TT T => T
+
+End Proof.
+
+Begin Proof of Tⁿ ⇒ T by induction
+===================================
+
+Base n=1)
+id is nat trans           :  T ⇒ T
+
+Base n=2)
+μ is nat trans            :  TT ⇒ T
+
+Inductive step
+Assume unique μ⁽ⁿ⁾: Tⁿ ⇒ T
+
+case1)
+μ⁽ⁿ⁾ is nat trans         :  Tⁿ ⇒ T
+L-whisk μ⁽ⁿ⁾ is a nattran  :  T Tⁿ ⇒ T T
+V-compose                  :  T Tⁿ ⇒ T
+
+case2)
+μ⁽ⁿ⁾ is nat trans         :  Tⁿ ⇒ T
+R-whisk μ⁽ⁿ⁾ is a nattran  :  Tⁿ T ⇒ T T
+V-compose                  :  Tⁿ T ⇒ T
+
+End Proof.
+
+
+
+Category
+Objects
+Arrows
+Identity  Id f = f Id  = f
+Associativity  f g h = f g h
+
+Formation of Monoid Functor T
+  -- Identity Element 
+  -- Associativity 
+
