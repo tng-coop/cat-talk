@@ -1,0 +1,17 @@
+Theorem (Uniqueness of Identity)
+--------------------------------
+For any object A in a category C, the identity morphism on A is unique.
+
+Proof
+-----
+Assume there are two identity morphisms on A: i_A : A -> A and j_A : A -> A.
+
+By the right-identity law of j_A, for any morphism f: A -> A we have f ∘ j_A = f.
+Take f = i_A. Then:
+    i_A ∘ j_A = i_A      (1)
+
+By the left-identity law of i_A, for any morphism g: A -> A we have i_A ∘ g = g.
+Take g = j_A. Then:
+    i_A ∘ j_A = j_A      (2)
+
+From (1) and (2) we get i_A = j_A. Therefore the identity on A is unique.  □
