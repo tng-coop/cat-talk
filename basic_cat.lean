@@ -99,3 +99,20 @@ def typeProduct (A B : Type) : IsProduct typeCategory A B := {
     · exact congrFun h1 x
     · exact congrFun h2 x
 }
+
+--------------------------------------------------------------------------------
+-- 5. Alternative Definition: Predicate Style (Standard Math)
+--------------------------------------------------------------------------------
+-- In standard math, we often don't bundle P. We ask "Is THIS P a product?"
+-- This is a Prop-valued function (Predicate), not a Type-valued function (Structure).
+
+def is_product_predicate {Obj : Type u} (C : Category Obj) (A B P : Obj)
+  (π₁ : Hom C P A) (π₂ : Hom C P B) : Prop :=
+    ∀ (X : Obj) (f₁ : Hom C X A) (f₂ : Hom C X B),
+      ∃ (u : Hom C X P),
+        (comp C u π₁ = f₁) ∧ (comp C u π₂ = f₂) ∧
+        (∀ (v : Hom C X P), (comp C v π₁ = f₁) → (comp C v π₂ = f₂) → v = u)
+
+-- Comparison:
+-- Structure Style: "Find me a product." -> Returns P
+-- Predicate Style: "Check if P is a product." -> Returns True/False
