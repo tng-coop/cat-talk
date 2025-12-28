@@ -12,7 +12,9 @@ Standard mathematics usually defines "being a product" as a **property** that an
 *   **The Question:** "Is this specific $P$ a product?"
 
 ### Formal Notation
-$$ \text{isProduct}(A, B, P) := \text{Hom}(-, P) \cong \text{Hom}(-, A) \times \text{Hom}(-, B) $$
+$$
+\text{isProduct}(A, B, P) := \text{Hom}(-, P) \cong \text{Hom}(-, A) \times \text{Hom}(-, B)
+$$
 
 If you were to write this in Lean directly, it would look like this:
 ```lean
@@ -32,7 +34,9 @@ In Constructive Type Theory, we often treat the product not as a property of an 
 *   **The Question:** "Find me a product."
 
 ### Formal Notation (Sigma Type)
-$$ \text{Product}(A, B) := \sum_{P \in \text{Obj}} \text{isProduct}(A, B, P) $$
+$$
+\text{Product}(A, B) := \sum_{P \in \text{Obj}} \text{isProduct}(A, B, P)
+$$
 
 This corresponds to your current definition:
 ```lean
