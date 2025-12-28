@@ -18,19 +18,19 @@ open Category
 
 -- 2. The Universal Property of a Product
 --    English (Matching the 'structure' syntax):
---      [Type Name / Question]: `IsProduct C A B` (Depends ONLY on A and B).
+--      [Type Name / Question]: `BinaryProduct C A B` (Depends ONLY on A and B).
 --      [Meaning   / Answer  ]: This type asserts the EXISTENCE of a structure containing:
 --                              1. An object P (The Product Object)
 --                              2. Projections π₁, π₂
 --                              3. A universal 'lift' capability.
 --
---    FOL (The proposition defined by 'IsProduct C A B'):
+--    FOL (The proposition defined by 'BinaryProduct C A B'):
 --      Let Prop(A, B) = ∃ P, ∃ π₁: P → A, ∃ π₂: P → B, ... (Laws)
 --
 --    TEXTBOOK NOTATION:
 --      Standard texts usually define "The Product" via the isomorphism of Hom-sets:
 --      Hom(X, P) ≅ Hom(X, A) × Hom(X, B)
---      Our `IsProduct` structure is the explicit construction of this isomorphism.
+--      Our `BinaryProduct` structure is the explicit construction of this isomorphism.
 --
 --    STYLE NOTE (Predicate vs Structure):
 --      Standard Math often phrasing: "An object P is a product if..." (Predicate Style).
@@ -38,7 +38,7 @@ open Category
 --      We use this style so that the structure *carries* the object P as data we can use.
 --
 --    NOTE: This structure is a DEFINITION of the concept, not a proof.
---          The type `IsProduct C A B` represents the Proposition "A and B have a product".
+--          The type `BinaryProduct C A B` represents the Proposition "A and B have a product".
 --          It is not "always true"; it is true (inhabited) only if the category C actually HAS products.
 --
 --    NOTE ON UNIQUENESS:
@@ -47,14 +47,14 @@ open Category
 --          will be practically indistinguishable from P (isomorphic).
 --
 --    MATHEMATICAL PRECISION (Type Theory):
---          Strictly speaking, `IsProduct` is a **Type Constructor**.
+--          Strictly speaking, `BinaryProduct` is a **Type Constructor**.
 --          It is a function: `Obj → Obj → Type`.
 --          The Type it returns is a **Dependent Sum** (Sigma Type), roughly:
 --            Σ (P : Obj), Σ (π₁ : P → A), Σ (π₂ : P → B), ... (Laws)
 --          Because of Propositions-as-Types, this Type *represents* the existential proposition.
 --
 --    We use simple explicit function application instead of custom notation to avoid ambiguity.
-structure IsProduct {Obj : Type u} (C : Category Obj) (A B : Obj) where
+structure BinaryProduct {Obj : Type u} (C : Category Obj) (A B : Obj) where
   P : Obj
   π₁ : Hom C P A
   π₂ : Hom C P B
@@ -76,7 +76,7 @@ def typeCategory : Category Type := {
 }
 
 -- 4. Verification: The Product of Types is the Product Type (A × B)
-def typeProduct (A B : Type) : IsProduct typeCategory A B := {
+def typeProduct (A B : Type) : BinaryProduct typeCategory A B := {
   P := A × B
   π₁ := Prod.fst
   π₂ := Prod.snd
