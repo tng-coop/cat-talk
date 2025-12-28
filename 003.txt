@@ -1,0 +1,32 @@
+Category C
+===========
+
+Data
+----
+- Objects (A, B, C, ...)
+- Morphisms (arrows) f : A -> B
+
+Axioms
+------
+
+1. Identity
+   For every object A there exists a morphism
+       Id_A : A -> A
+   called the identity on A.
+
+2. Left Identity
+   For every morphism f : A -> B,
+       f ∘ Id_A = f
+
+3. Right Identity
+   For every morphism f : A -> B,
+       Id_B ∘ f = f
+
+4. Composition
+   If f : A -> B and g : B -> C, then
+       g ∘ f : A -> C
+   is a morphism in the category.
+
+5. Associativity
+   For all f : A -> B, g : B -> C, h : C -> D,
+       (h ∘ g) ∘ f = h ∘ (g ∘ f)
