@@ -4,6 +4,7 @@ import Mathlib.CategoryTheory.Monoidal.Types.Basic
 import Mathlib.Tactic.CategoryTheory.Coherence
 import Mathlib.Algebra.Group.Defs
 import Mathlib.Data.List.Basic
+import Mathlib.CategoryTheory.Monad.Basic -- Import the Monad definition
 
 /-
   ==============================================================================
@@ -44,9 +45,6 @@ example {C : Type u} [Category C] [MonoidalCategory C] (W X Y Z : C) :
 --    Because (C ⥤ C) is a Strict Monoidal Category, the associativity is definitional
 --    and we can use standard Monoid theorems.
 
---    The "General Associativity Theorem" (guaranteeing T^n -> T is unique)
---    is formally realized in Lean as theorems about List.prod.
-
 section MonadGeneralAssociativity
 
   variable {M : Type} [Monoid M]
@@ -66,3 +64,46 @@ section MonadGeneralAssociativity
       simp [List.cons_append, List.prod_cons, mul_assoc, ih]
 
 end MonadGeneralAssociativity
+
+-- 5. Mathlib Monad Definition
+--    Here we examine the rigorous definition of a Monad from Mathlib.
+--    It is NOT limited to Types; it works for ANY category C.
+
+section MathlibMonadDemo
+
+  variable (C : Type u) [Category C]
+
+  -- The definition from Mathlib.CategoryTheory.Monad.Basic roughly looks like this:
+  -- structure Monad extends C ⥤ C where
+  --   η : 𝟭 C ⟶ toFunctor
+  --   μ : toFunctor ⋙ toFunctor ⟶ toFunctor
+  --   assoc : ...
+  --   left_unit : ...
+  --   right_unit : ...
+
+  -- Example: Defining the IDENTITY Monad manually
+  -- This shows that the identity functor is a monad where η and μ are just identity.
+
+  def IdentityMonad : Monad C where
+    toFunctor := 𝟭 C  -- The underlying functor is Identity
+    η := 𝟙 (𝟭 C)      -- η is the identity transformation (Id -> Id)
+    μ := 𝟙 (𝟭 C)      -- μ is the identity transformation (Id ∘ Id -> Id)
+
+    -- Proof that Associativity holds (Id ∘ Id = Id ∘ Id)
+    assoc := by
+      intro X
+      -- In Lean, these simplifications are automatic because
+      -- (𝟭 C).map f is just f, and compositions with identity are trivial.
+      simp
+
+    -- Proof of Left Unit
+    left_unit := by
+      intro X
+      simp
+
+    -- Proof of Right Unit
+    right_unit := by
+      intro X
+      simp
+
+end MathlibMonadDemo

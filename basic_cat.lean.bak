@@ -1,0 +1,241 @@
+/-
+  Basic Category Theory in Lean 4
+  (Refactored to use Type Classes for implicit instance handling)
+-/
+
+-- 1. Definition of a Category (CLASS)
+--    Note: `class` is just a structure that Lean searches for automatically.
+class Category (Obj : Type u) where
+  Hom : Obj → Obj → Type v
+  id  : ∀ {X : Obj}, Hom X X
+  comp : ∀ {X Y Z : Obj}, Hom X Y → Hom Y Z → Hom X Z
+  -- Laws
+  id_comp : ∀ {X Y : Obj} (f : Hom X Y), comp id f = f
+  comp_id : ∀ {X Y : Obj} (f : Hom X Y), comp f id = f
+  assoc   : ∀ {W X Y Z : Obj} (f : Hom W X) (g : Hom X Y) (h : Hom Y Z),
+              comp (comp f g) h = comp f (comp g h)
+
+-- 1.1 Notation (The Benefit of Type Classes!)
+--     Because 'Category' is a class, we can define global notation that works
+--     for ANY category, without manually passing 'C'.
+
+-- "Long Right Arrow" for Morphisms
+infixr:10 " ⟶ " => Category.Hom
+
+-- "Double Greater Than" for Composition (Left-to-Right reading is often nicer)
+-- But standard category theory usually sticks to right-to-left ∘.
+-- Let's stick to standard names but implicit arguments.
+open Category
+
+-- 2. The Universal Property of a Product
+--    Notice: We use `[Category Obj]` instead of `(C : Category Obj)`.
+--    This is "Dependency Injection". We assume there IS a category for Obj.
+structure BinaryProduct {Obj : Type u} [Category Obj] (A B : Obj) where
+  P : Obj
+  π₁ : P ⟶ A   -- Look! No 'C' argument needed!
+  π₂ : P ⟶ B
+  lift : ∀ {X : Obj}, (X ⟶ A) → (X ⟶ B) → (X ⟶ P)
+
+  -- Laws use 'comp' which implicitly finds the category instance
+  fac₁ : ∀ {X : Obj} (f₁ : X ⟶ A) (f₂ : X ⟶ B), comp (lift f₁ f₂) π₁ = f₁
+  fac₂ : ∀ {X : Obj} (f₁ : X ⟶ A) (f₂ : X ⟶ B), comp (lift f₁ f₂) π₂ = f₂
+  uniq : ∀ {X : Obj} (f₁ : X ⟶ A) (f₂ : X ⟶ B) (g : X ⟶ P),
+           (comp g π₁ = f₁) → (comp g π₂ = f₂) → g = lift f₁ f₂
+
+-- 3. An Example: Concrete implementation for Type (Sets)
+--    Note: `instance` is just `def` that gets added to the search registry.
+instance typeCategory : Category Type := {
+  Hom     := fun A B => A → B
+  id      := fun x => x
+  comp    := fun f g x => g (f x)
+
+  id_comp := by intros; rfl
+  comp_id := by intros; rfl
+  assoc   := by intros; rfl
+}
+
+-- 4. Verification: The Product of Types is the Product Type (A × B)
+--    Implicitly uses `typeCategory` instance!
+def typeProduct (A B : Type) : BinaryProduct A B := {
+  -- 1. Object
+  P := A × B
+
+  -- 2. Projections
+  π₁ := Prod.fst
+  π₂ := Prod.snd
+
+  -- 3. The Universal Map "lift"
+  lift := fun {X} f g x => (f x, g x)
+
+  -- 4. Proofs
+  fac₁ := by
+    intros X f1 f2
+    funext x
+    rfl
+
+  fac₂ := by
+    intros X f1 f2
+    funext x
+    rfl
+
+  -- 5. Proof of Uniqueness
+  uniq := by
+    intros X f1 f2 g h1 h2
+    funext x
+    apply Prod.ext
+
+    -- Notice: Usage is identical, but setup was cleaner.
+    -- h1 : comp g π₁ = f1
+    · exact congrFun h1 x
+    · exact congrFun h2 x
+}
+
+--------------------------------------------------------------------------------
+-- 5. Alternative Definition: Predicate Style
+--------------------------------------------------------------------------------
+
+-- Notice how much cleaner the signature is with Type Classes and Notation!
+def is_product_predicate {Obj : Type u} [Category Obj] (A B P : Obj)
+  (π₁ : P ⟶ A) (π₂ : P ⟶ B) : Prop :=
+    ∀ (X : Obj) (f₁ : X ⟶ A) (f₂ : X ⟶ B),
+      ∃ (u : X ⟶ P),
+        (comp u π₁ = f₁) ∧ (comp u π₂ = f₂) ∧
+        (∀ (v : X ⟶ P), (comp v π₁ = f₁) → (comp v π₂ = f₂) → v = u)
+
+
+--------------------------------------------------------------------------------
+-- 6. Isomorphisms
+--------------------------------------------------------------------------------
+-- We need Isomorphisms to define Monoidal Categories (laws are up to iso).
+
+structure Iso {Obj : Type u} [Category Obj] (A B : Obj) where
+  hom : A ⟶ B
+  inv : B ⟶ A
+  hom_inv_id : comp hom inv = Category.id
+  inv_hom_id : comp inv hom = Category.id
+
+infix:50 " ≅ " => Iso  -- Type with `\cong`
+
+--------------------------------------------------------------------------------
+-- 7. Monoidal Category
+--------------------------------------------------------------------------------
+-- A Monoidal Category is a Category equipped with a Tensor Product and Unit,
+-- satisfying coherence conditions (Pentagon and Triangle identities).
+
+class MonoidalCategory (Obj : Type u) extends Category Obj where
+  -- Data
+  tensorObj  : Obj → Obj → Obj
+  tensorHom  : {X Y X' Y' : Obj} → (X ⟶ Y) → (X' ⟶ Y') → (tensorObj X X' ⟶ tensorObj Y Y')
+  tensorUnit : Obj
+
+  -- Associator Isomorphism: (X ⊗ Y) ⊗ Z ≅ X ⊗ (Y ⊗ Z)
+  associator : ∀ (X Y Z : Obj), Iso (tensorObj (tensorObj X Y) Z) (tensorObj X (tensorObj Y Z))
+
+  -- Left Unitor: 1 ⊗ X ≅ X
+  leftUnitor : ∀ (X : Obj), Iso (tensorObj tensorUnit X) X
+
+  -- Right Unitor: X ⊗ 1 ≅ X
+  rightUnitor : ∀ (X : Obj), Iso (tensorObj X tensorUnit) X
+
+  -- Laws (Coherence Conditions)
+
+  -- 1. Pentagon Identity
+  --    ((W ⊗ X) ⊗ Y) ⊗ Z
+  --      v [a W X Y ⊗ id]                        v [a (W⊗X) Y Z]
+  --    (W ⊗ (X ⊗ Y)) ⊗ Z                       (W ⊗ X) ⊗ (Y ⊗ Z)
+  --      v [a W (X⊗Y) Z]                         v [a W X (Y⊗Z)]
+  --    W ⊗ ((X ⊗ Y) ⊗ Z)                       W ⊗ (X ⊗ (Y ⊗ Z))
+  --      v [id ⊗ a X Y Z]                        ^
+  --    W ⊗ (X ⊗ (Y ⊗ Z))  <-----------------------
+
+  pentagon : ∀ (W X Y Z : Obj),
+    let a := associator
+    let t := tensorObj
+    -- Path 1 (Bottom/Left in standard diagram, Length 3)
+    -- ((W X) Y) Z -> (W (X Y)) Z -> W ((X Y) Z) -> W (X (Y Z))
+    comp (comp (tensorHom (a W X Y).hom Category.id) (a W (t X Y) Z).hom) (tensorHom Category.id (a X Y Z).hom)
+    =
+    -- Path 2 (Top/Right in standard diagram, Length 2)
+    -- ((W X) Y) Z -> (W X) (Y Z) -> W (X (Y Z))
+    comp (a (t W X) Y Z).hom (a W X (t Y Z)).hom
+
+  -- 2. Triangle Identity
+  triangle : ∀ (X Y : Obj),
+    comp (associator X tensorUnit Y).hom (tensorHom Category.id (leftUnitor Y).hom)
+    = tensorHom (rightUnitor X).hom Category.id
+
+-- Notation for Tensor Product
+infixr:70 " ⊗ " => MonoidalCategory.tensorObj
+
+--------------------------------------------------------------------------------
+-- 8. Monoidal Instance for Type (Sets)
+--------------------------------------------------------------------------------
+-- The category of Types is Monoidal under Cartesian Product.
+
+instance monoidalType : MonoidalCategory Type where
+  -- 1. Tensor = Cartesian Product
+  tensorObj A B := A × B
+  tensorHom f g := fun (a, b) => (f a, g b)
+
+  -- 2. Unit = PUnit (The singleton type containing only `PUnit.unit`)
+  tensorUnit := PUnit
+
+  -- 3. Associator: ((A × B) × C) ≅ (A × (B × C))
+  associator A B C := {
+    hom := fun ((a, b), c) => (a, (b, c))
+    inv := fun (a, (b, c)) => ((a, b), c)
+    hom_inv_id := by funext x; rfl
+    inv_hom_id := by funext x; rfl
+  }
+
+  -- 4. Left Unitor: (PUnit × A) ≅ A
+  leftUnitor A := {
+    hom := fun (_, a) => a
+    inv := fun a => (PUnit.unit, a)
+    hom_inv_id := by funext x; cases x; rfl -- Need 'cases' to prove PUnit is unique
+    inv_hom_id := by funext x; rfl
+  }
+
+  -- 5. Right Unitor: (A × PUnit) ≅ A
+  rightUnitor A := {
+    hom := fun (a, _) => a
+    inv := fun a => (a, PUnit.unit)
+    hom_inv_id := by funext x; cases x; rfl
+    inv_hom_id := by funext x; rfl
+  }
+
+  -- 6. Laws (Trivial for Types because equalities hold definitionally or simply)
+  -- 6. Laws (Trivial for Types because equalities hold definitionally or simply)
+  pentagon W X Y Z := by
+    dsimp [Category.comp, Category.id]
+    rfl
+
+  triangle X Y := by
+    dsimp [Category.comp, Category.id]
+    -- For types, ((x, unit), y) is definitionally isomorphic to (x, y) via logical equivalence of the types?
+    -- No, but the values map to the same thing definitionally.
+    rfl
+
+--------------------------------------------------------------------------------
+-- 9. Mac Lane's Coherence Theorem (The "Meta-Theorem")
+--------------------------------------------------------------------------------
+/-
+  You might ask: "Why only the Pentagon and Triangle? What about the Hexagon?"
+
+  Mac Lane's Coherence Theorem states:
+
+  "In a Monoidal Category, if the Pentagon and Triangle identities hold,
+   then ANY diagram built solely from:
+     - The Tensor Product (⊗)
+     - The Associator (α)
+     - The Unitors (λ, ρ)
+     - Identity morphisms
+   is commutative."
+
+  IMPLICATION:
+  This means that for any sequence of objects (A ⊗ B ⊗ ... ⊗ Z), there is
+  EXACTLY ONE canonical isomorphism between any two parenthesizations.
+
+  This justifies the common practice of omitting parentheses entirely:
+  A ⊗ B ⊗ C is unambiguous up to unique isomorphism.
+-/
