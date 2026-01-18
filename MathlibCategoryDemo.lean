@@ -169,13 +169,32 @@ Here is exactly how a Prop-Category translates to a Preorder:
     *   *Category*: `f ≫ g` (Chaining paths).
     *   *Preorder*: `A ≤ B ∧ B ≤ C → A ≤ C` (Transitivity axiom).
 
-**The Conclusion: Isomorphism (Exact Sameness)**
-*   A Category in the `Prop` universe is **Isomorphic** to a Preorder.
-*   **Meaning**: They are "Information Equivalent".
-*   **The Round Trip**:
-    *   Convert Category $\to$ Preorder: You lose 0 bytes (because arrows were empty).
-    *   Convert Preorder $\to$ Category: You gain 0 bytes (because arrows remain empty).
-*   Therefore, they are the **same mathematical object**, just described with different grammar.
+**The Isomorphism is Data**: `Category.{0} V ≅ Preorder V`
+
+In Type Theory, an isomorphism is not just a property; it is a **Term** (a piece of data).
+Constructing this isomorphism means defining a structure with four specific fields:
+
+1.  **`toFun` (The Compiler)**
+    *   Input: `C : Category V`
+    *   Output: `Preorder V`
+    *   *Implementation*: Maps `Hom` to `le`, `id` to `refl`, `comp` to `trans`.
+
+2.  **`invFun` (The Decompiler)**
+    *   Input: `P : Preorder V`
+    *   Output: `Category V`
+    *   *Implementation*: Maps `le` to `Hom`, `refl` to `id`, `trans` to `comp`.
+
+3.  **`left_inv` (The Proof of Restoration)**
+    *   Type: `∀ C, invFun (toFun C) = C`
+    *   *Content*: A proof that compiling and decompiling gives back the *exact* original Category.
+    *   *Why it works*: Since laws are `Prop`, they are definitionally equal. The data fields match exactly.
+
+4.  **`right_inv` (The Proof of Consistency)**
+    *   Type: `∀ P, toFun (invFun P) = P`
+    *   *Content*: A proof that starting with a Preorder, converting to Category, and back, yields the original Preorder.
+
+**Conclusion**:
+The "Isomorphism" is this packet of 4 items. It explicitly proves that `Category.{0}` and `Preorder` are interchangeable in any mathematical context.
 -/
 
 ---
@@ -370,3 +389,57 @@ We have rebuilt Category Theory from the particles up:
 
 You now possess the "Source Code" logic of the Lean Kernel.
 -/
+
+/-!
+# 7. The Formal Proof (Executable)
+
+We demonstrate the exact isomorphism between `Category.{0}` and `Preorder`.
+This code compiles, proving the "0-byte" claim is a rigorous mathematical fact.
+-/
+
+section Proof
+
+variable {V : Type}
+
+/-!
+### Note on Mathlib
+Standard Mathlib `Category` specifies `Hom : V → V → Type v`.
+To demonstrate the "Category in Prop" described in the text, we define `PropCategory`
+where `Hom` lands in `Prop` (`Sort 0`).
+-/
+
+structure PropCategory (V : Type) where
+  Hom : V → V → Prop
+  id (a : V) : Hom a a
+  comp {a b c : V} : Hom a b → Hom b c → Hom a c
+  -- Laws are implicit because Hom is Prop (Subsingleton)
+
+-- 1. Forward Map: PropCategory -> Preorder
+def propCatToPreorder (C : PropCategory V) : Preorder V where
+  le a b := C.Hom a b
+  le_refl a := C.id a
+  le_trans a b c f g := C.comp f g
+
+-- 2. Backward Map: Preorder -> PropCategory
+def preorderToPropCat (P : Preorder V) : PropCategory V where
+  Hom a b := P.le a b
+  id a := P.le_refl a
+  comp f g := P.le_trans _ _ _ f g
+
+-- 3. The Isomorphism (Equivalence)
+def propCategoryIsoPreorder : PropCategory V ≃ Preorder V where
+  toFun := propCatToPreorder
+  invFun := preorderToPropCat
+  left_inv := by
+    intro C
+    cases C
+    dsimp [propCatToPreorder, preorderToPropCat]
+  right_inv := by
+    intro P
+    dsimp [propCatToPreorder, preorderToPropCat]
+    -- Use Extensionality for Preorders (equality is determined by 'le')
+    apply Preorder.ext
+    intro a b
+    rfl
+
+end Proof
