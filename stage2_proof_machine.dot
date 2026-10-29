@@ -1,0 +1,100 @@
+digraph Stage2 {
+    rankdir=TB;
+    nodesep=0.6;
+    splines=ortho;
+    fontname="Inter";
+    pad=0.2;
+    
+    node [fontname="Inter", fontsize=11, shape=plain, style=filled, fillcolor="white"];
+    edge [fontname="Inter", fontsize=10, color="#555555", penwidth=1.2];
+
+    Title [shape=plaintext, label="STAGE 2: THE PROOF CHECKER\n(Validating with Arithmetic)", fontsize=20];
+
+    // 1. Context
+    Context [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#FFF3E0">
+            <tr><td colspan="2" bgcolor="#FB8C00"><font color="white"><b>THE QUESTION: IS IT VALID?</b></font></td></tr>
+            <tr>
+                <td><b>Input:</b></td>
+                <td>A list of numbers: <b>[ n1, n2, n3 ]</b></td>
+            </tr>
+            <tr>
+                <td><b>Goal:</b></td>
+                <td>Check if <b>n3</b> validly follows from <b>n1</b> and <b>n2</b>.</td>
+            </tr>
+        </table>
+    >];
+
+    // 2. Concrete Example
+    Example [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#E1F5FE">
+            <tr><td colspan="3" bgcolor="#039BE5"><font color="white"><b>CONCRETE EXAMPLE: MODUS PONENS</b></font></td></tr>
+            <tr>
+                <td><b>Step 1 (n1):</b></td>
+                <td>&quot;0=0&quot;</td>
+                <td>Code: <b>100</b> (simplified)</td>
+            </tr>
+            <tr>
+                <td><b>Step 2 (n2):</b></td>
+                <td>&quot;0=0 implies S(0)=S(0)&quot;</td>
+                <td>Code: <b>500</b> (simplified)</td>
+            </tr>
+            <tr>
+                <td><b>Step 3 (n3):</b></td>
+                <td>&quot;S(0)=S(0)&quot;</td>
+                <td>Code: <b>200</b> (simplified)</td>
+            </tr>
+        </table>
+    >];
+
+    // 3. The Arithmetic Check
+    Mechanism [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#F1F8E9">
+            <tr><td colspan="2" bgcolor="#43A047"><font color="white"><b>THE MACHINE'S CHECK (Pure Math)</b></font></td></tr>
+            
+            <tr>
+                <td colspan="2">The Machine does NOT read &quot;Implies&quot;. It calculates a TEST NUMBER.</td>
+            </tr>
+            <tr>
+                <td><b>1. Calculate Expected Pattern</b></td>
+                <td>
+                    It takes <b>n1</b> (100) and <b>n3</b> (200).<br/>
+                    It computes the code for &quot;n1 -&gt; n3&quot; using a formula:<br/>
+                    <i>TestVal = (2^Code(¬) * 3^Code(Open) * ... * n1 * ... * n3 ...)</i>
+                </td>
+            </tr>
+            <tr>
+                <td><b>2. The Calculation Result</b></td>
+                <td>
+                    Let's say the formula spits out <b>500</b>.<br/>
+                    <i>(Because 500 is the code for &quot;100 -&gt; 200&quot;)</i>
+                </td>
+            </tr>
+            <tr>
+                <td><b>3. Compare</b></td>
+                <td>
+                    Does <b>n2</b> (Actual Step 2) equal <b>TestVal</b>?<br/>
+                    <b>Is 500 == 500?</b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" bgcolor="#C8E6C9"><b>YES. MATCH. THEREFORE VALID.</b></td>
+            </tr>
+        </table>
+    >];
+
+    // 4. The Loop
+    Loop [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#ECEFF1">
+            <tr><td bgcolor="#546E7A"><font color="white"><b>THE ALGORITHM</b></font></td></tr>
+            <tr><td>1. Loop through every number in the list.</td></tr>
+            <tr><td>2. For each number, check if it equals an Axiom Pattern.</td></tr>
+            <tr><td>3. OR check if it equals a Calculated Modus Ponens Pattern from ANY previous numbers.</td></tr>
+            <tr><td><b>This is just a giant pile of Multiplication and Checking Equals.</b></td></tr>
+        </table>
+    >];
+
+    Context -> Example [label="The Data"];
+    Example -> Mechanism [label="The Verification"];
+    Mechanism -> Loop [label="Repeat for all steps"];
+}

@@ -1,0 +1,118 @@
+digraph Stage1 {
+    rankdir=TB;
+    nodesep=0.5;
+    splines=ortho;
+    fontname="Inter";
+    pad=0.2;
+    
+    node [fontname="Inter", fontsize=11, shape=plain, style=filled, fillcolor="white"];
+    edge [fontname="Inter", fontsize=10, color="#555555", penwidth=1.2];
+
+    Title [shape=plaintext, label="STAGE 1: THE ARITHMETIC COMPILER\n(Turning Logic into Numbers)", fontsize=20];
+
+    // 1. The Raw Input
+    Input [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#F3E5F5">
+            <tr><td colspan="4" bgcolor="#AB47BC"><font color="white"><b>STEP 1: THE INPUT FORMULA</b></font></td></tr>
+            <tr>
+                <td bgcolor="#E1BEE7"><b>We want to rewrite:</b></td>
+                <td colspan="3"><font point-size="14"><b>¬ ( 0 = 0 )</b></font></td>
+            </tr>
+            <tr>
+                <td colspan="4"><i>Logic: "It is NOT the case that 0 equals 0" (A False Statement)</i></td>
+            </tr>
+        </table>
+    >];
+
+    // 2. The Dictionary
+    Dict [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="6" bgcolor="#E3F2FD">
+            <tr><td colspan="3" bgcolor="#1E88E5"><font color="white"><b>STEP 2: THE SYMBOL MAP</b></font></td></tr>
+            <tr><td><b>Symbol</b></td><td><b>Meaning</b></td><td><b>Code</b></td></tr>
+            <tr><td>0</td><td>Zero</td><td>1</td></tr>
+            <tr><td>S</td><td>Next</td><td>3</td></tr>
+            <tr><td>=</td><td>Equals</td><td>5</td></tr>
+            <tr><td>¬</td><td>Not</td><td>7</td></tr>
+            <tr><td>(</td><td>Open</td><td>13</td></tr>
+            <tr><td>)</td><td>Close</td><td>15</td></tr>
+        </table>
+    >];
+
+    // 3. The Transformation
+    Transform [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#FFF3E0">
+             <tr><td colspan="7" bgcolor="#FB8C00"><font color="white"><b>STEP 3: MAPPING TO LIST</b></font></td></tr>
+             <tr>
+                 <td><b>Symbol:</b></td>
+                 <td bgcolor="#FFCC80">¬</td>
+                 <td bgcolor="#FFCC80">(</td>
+                 <td bgcolor="#FFCC80">0</td>
+                 <td bgcolor="#FFCC80">=</td>
+                 <td bgcolor="#FFCC80">0</td>
+                 <td bgcolor="#FFCC80">)</td>
+             </tr>
+             <tr>
+                 <td><b>Code:</b></td>
+                 <td bgcolor="#FFE0B2"><b>7</b></td>
+                 <td bgcolor="#FFE0B2"><b>13</b></td>
+                 <td bgcolor="#FFE0B2"><b>1</b></td>
+                 <td bgcolor="#FFE0B2"><b>5</b></td>
+                 <td bgcolor="#FFE0B2"><b>1</b></td>
+                 <td bgcolor="#FFE0B2"><b>15</b></td>
+             </tr>
+        </table>
+    >];
+
+    // 4. The Prime Locking
+    Primes [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#E8F5E9">
+            <tr><td colspan="3" bgcolor="#43A047"><font color="white"><b>STEP 4: PRIME ENCODING</b></font></td></tr>
+            <tr><td colspan="3"><i>Rule: Use Prime numbers as "Slots" and Codes as "values in slots"</i></td></tr>
+            <tr>
+                <td><b>Slot 1 (Prime 2)</b></td>
+                <td>Value 7</td>
+                <td>Calculate: 2<sup>7</sup></td>
+            </tr>
+            <tr>
+                <td><b>Slot 2 (Prime 3)</b></td>
+                <td>Value 13</td>
+                <td>Calculate: 3<sup>13</sup></td>
+            </tr>
+            <tr>
+                <td><b>Slot 3 (Prime 5)</b></td>
+                <td>Value 1</td>
+                <td>Calculate: 5<sup>1</sup></td>
+            </tr>
+            <tr>
+                <td><b>Slot 4 (Prime 7)</b></td>
+                <td>Value 5</td>
+                <td>Calculate: 7<sup>5</sup></td>
+            </tr>
+            <tr>
+                <td><b>Slot 5 (Prime 11)</b></td>
+                <td>Value 1</td>
+                <td>Calculate: 11<sup>1</sup></td>
+            </tr>
+            <tr>
+                <td><b>Slot 6 (Prime 13)</b></td>
+                <td>Value 15</td>
+                <td>Calculate: 13<sup>15</sup></td>
+            </tr>
+        </table>
+    >];
+
+    // 5. The Result
+    Result [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#FFEBEE">
+            <tr><td bgcolor="#E53935"><font color="white"><b>STEP 5: THE FINAL GODEL NUMBER</b></font></td></tr>
+            <tr><td><b>N = 2<sup>7</sup> · 3<sup>13</sup> · 5<sup>1</sup> · 7<sup>5</sup> · 11<sup>1</sup> · 13<sup>15</sup></b></td></tr>
+            <tr><td><i>This ONE number contains the entire sentence perfectly preserved.</i></td></tr>
+            <tr><td><i>We can get the sentence back by Factorizing N.</i></td></tr>
+        </table>
+    >];
+
+    Input -> Transform [label="convert"];
+    Dict -> Transform;
+    Transform -> Primes [label="bases & exponents"];
+    Primes -> Result [label="multiply all"];
+}

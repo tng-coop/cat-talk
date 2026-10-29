@@ -1,0 +1,63 @@
+digraph Stage2DeepDive {
+    rankdir=TB;
+    nodesep=0.7;
+    ranksep=0.8;
+    splines=ortho;
+    fontname="Inter";
+    pad=0.2;
+    
+    // Node Styles: Data is Box, Operation is Ellipse, Decision is Diamond
+    node [fontname="Inter", fontsize=11];
+    
+    // DATA NODES (The Numbers)
+    node [shape=box, style="filled", fillcolor="#E3F2FD", color="#1565C0"];
+    ProofP [label="PROOF NUMBER P\n(Huge Integer)", fillcolor="#BBDEFB"];
+    
+    Step1 [label="Step 1 Number (n1)\nCode('0=0')\nValue: 100", width=2];
+    Step2 [label="Step 2 Number (n2)\nCode('0=0 -> S=S')\nValue: 500", width=2];
+    Step3 [label="Step 3 Number (n3)\nCode('S=S')\nValue: 200", width=2];
+
+    Calculated [label="The 'Expected' Number\nValue: 500", fillcolor="#FFF9C4", color="#FBC02D"];
+
+    // OPERATION NODES (The Actions)
+    node [shape=ellipse, style="filled", fillcolor="#E8F5E9", color="#2E7D32"];
+    Divide [label="FACTORIZE\n(Divide by Primes)"];
+    Combine [label="COMBINE\n(Arithmetic Formula)\n(2^Not * 3^Open * ... n1 * ... n3)"];
+    
+    // LOGIC NODES
+    node [shape=diamond, style="filled", fillcolor="#FFCDD2", color="#C62828"];
+    Comparator [label="IS EQUAL?", fillcolor="#FFE0B2", color="#F57C00"];
+    
+    // Result
+    node [shape=plaintext, fillcolor="white", color="white"];
+    Result [label="VALID STEP\n(Proof Continues)", fontsize=14, fontcolor="#2E7D32"];
+
+    // ----------------------
+    // THE FLOW
+    // ----------------------
+
+    Title [label="STAGE 2 DEEP DIVE: THE ARITHMETIC COLLISION", fontsize=18];
+
+    // 1. Break Proof into Steps
+    ProofP -> Divide [xlabel="input"];
+    Divide -> Step1 [xlabel="2^n1"];
+    Divide -> Step2 [xlabel="3^n2"];
+    Divide -> Step3 [xlabel="5^n3"];
+
+    // 2. The Check Logic
+    // We want to check if Step 2 is a valid "Implies" step linking 1 and 3.
+    // So we combine 1 and 3 to see what the link "Should" look like.
+    Step1 -> Combine [xlabel="Antecedent (100)"];
+    Step3 -> Combine [xlabel="Consequent (200)"];
+    
+    Combine -> Calculated [xlabel="Generates"];
+
+    // 3. The Collision
+    Calculated -> Comparator [xlabel="Reference"];
+    Step2 -> Comparator [xlabel="Actual"];
+
+    // 4. Outcome
+    Comparator -> Result [xlabel="Yes (500==500)"];
+    
+    {rank=same; Step1; Step2; Step3}
+}

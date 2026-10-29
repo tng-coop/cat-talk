@@ -1,0 +1,122 @@
+digraph IncompletenessPico {
+    // -------------------------------------------------------------
+    // VISUAL SETTINGS (Engineering Print Style)
+    // -------------------------------------------------------------
+    rankdir=LR; // Left to Right flow (Assembly Line)
+    nodesep=0.4;
+    ranksep=0.6;
+    splines=ortho;
+    fontname="Consolas";
+    bgcolor="#F0F2F5";
+    
+    // Default Node Styles
+    node [fontname="Consolas", fontsize=10, shape=record, style="filled", fillcolor="white", penwidth=1.0, color="#333333"];
+    edge [fontname="Consolas", fontsize=8, color="#555555", penwidth=1.0, arrowhead=vee];
+
+    // Titles
+    node [shape=none, fillcolor="transparent", penwidth=0];
+    GlobalTitle [label="THE INCOMPLETENESS FACTORY\n(Logic Circuit Blueprint)", fontsize=20, fontcolor="#111111"];
+
+    // -------------------------------------------------------------
+    // ZONE 1: THE ENCODER (Calculates Code of Formulas)
+    // -------------------------------------------------------------
+    subgraph cluster_Encoder {
+        label = "ZONE 1: THE ENCODER CIRCUIT (Maps Syntax to Integer)";
+        style="filled";
+        color="#E3F2FD";
+        fontcolor="#0D47A1";
+        node [color="#64B5F6"];
+
+        InputTape [label="{INPUT TAPE|SymbolSequence:\n '¬' '∃' 'x' ...}", shape=Mrecord, fillcolor="#BBDEFB"];
+        SymbolLookUp [label="{LOOKUP TABLE|¬: 1\n=: 2\n0: 3\nS: 4\n...}", shape=record];
+        PrimeGen [label="{PRIME GENERATOR|2, 3, 5, 7, 11...}", shape=cds];
+        Multiplier [label="{MULTIPLIER UNIT|Accumulator = 1\nAcc *= Prime[i] ^ Code[i]}", shape=component, fillcolor="#FFECB3"];
+        
+        BigIntOut [label="{OUTPUT INT|N = 243985...}", shape=circle, width=1.2, fillcolor="#FFCDD2"];
+
+        InputTape -> SymbolLookUp [label="read char"];
+        SymbolLookUp -> Multiplier [label="exponent"];
+        PrimeGen -> Multiplier [label="base"];
+        Multiplier -> BigIntOut [label="result"];
+    }
+
+    // -------------------------------------------------------------
+    // ZONE 2: THE SUBSTITUTION (The Self-Reference Engine)
+    // -------------------------------------------------------------
+    subgraph cluster_Substitution {
+        label = "ZONE 2: THE CLONING ROOM (Substitution Logic)";
+        style="filled";
+        color="#F3E5F5";
+        fontcolor="#4A148C";
+        node [color="#BA68C8"];
+
+        SubInput [label="{INPUTS|Template Number T\nTarget Value V}", shape=record];
+        Decoder [label="{DECODER|Factorize T -> Sequence}", shape=component];
+        Scanner [label="{VAR SCANNER|Find symbol #19 ('v')}", shape=box3d];
+        Inserter [label="{INSERTER|Replace 'v' with Numeral(V)}", shape=box3d];
+        Encoder2 [label="{RE-ENCODER|Calculate new Big Int}", shape=component];
+        
+        SubResult [label="{SUB RESULT|New Number S}", shape=circle, width=1.2, fillcolor="#E1BEE7"];
+
+        BigIntOut -> SubInput [label="feed T", style=dashed];
+        SubInput -> Decoder;
+        Decoder -> Scanner;
+        Scanner -> Inserter [label="found at pos 5"];
+        Inserter -> Encoder2 [label="new sequence"];
+        Encoder2 -> SubResult;
+    }
+
+    // -------------------------------------------------------------
+    // ZONE 3: THE TRAP (The Diagonal Fix)
+    // -------------------------------------------------------------
+    subgraph cluster_Trap {
+        label = "ZONE 3: THE DIAGONAL LOOP (The Paradox Construction)";
+        style="filled";
+        color="#FFF3E0";
+        fontcolor="#E65100";
+        node [color="#FFB74D"];
+
+        // The specific formula being built
+        FormulaP [label="{PREDICATE P(x)|'x is UNPROVABLE'\nCode: N_P}", shape=note, fillcolor="#FFF9C4"];
+        
+        // The Diagonal Input
+        DiagonalLogic [label="{DIAGONAL LOGIC|Let d = sub(N_P, N_P)\n(Feed the code of P into P)}", shape=rect];
+        
+        // The Resulting Sentence G
+        SentenceG [label="{SENTENCE G|G ↔ P(Code(G))\n'This sentence is unprovable'}", shape=Mrecord, fillcolor="#FFCCBC"];
+
+        FormulaP -> DiagonalLogic [label="source"];
+        SubResult -> DiagonalLogic [label="mechanism"];
+        DiagonalLogic -> SentenceG [label="constructs"];
+    }
+
+    // -------------------------------------------------------------
+    // ZONE 4: THE EXECUTION (The System Crash)
+    // -------------------------------------------------------------
+    subgraph cluster_Crash {
+        label = "ZONE 4: THE TRUTH TABLE (System Status)";
+        style="filled";
+        color="#FFEBEE";
+        fontcolor="#B71C1C";
+        node [color="#E57373"];
+
+        ProvableTest [label="{TESTING 'PROVABILITY'|Does T ⊢ G?}", shape=diamond, fillcolor="#FFCDD2"];
+        
+        // Scenario A
+        ScenarioA [label="{SCENARIO A (YES)|1. Proof P exists\n2. Math checks P works\n3. T proves 'Proof exists'\n4. G says 'No proof exists'\n5. T proves P & ¬P}", shape=record];
+        Crash [label="{SYSTEM CRASH|INCONSISTENCY}", shape=doubleoctagon, fillcolor="#FF5252", fontcolor="white"];
+
+        // Scenario B
+        ScenarioB [label="{SCENARIO B (NO)|1. No Proof exists\n2. G says 'No proof exists'\n3. G is TRUE\n4. T cannot prove G}", shape=record];
+        Truth [label="{SYSTEM STABLE|INCOMPLETE}", shape=doubleoctagon, fillcolor="#66BB6A", fontcolor="white"];
+
+        SentenceG -> ProvableTest [label="examine"];
+        ProvableTest -> ScenarioA [label="assume YES"];
+        ProvableTest -> ScenarioB [label="assume NO"];
+        ScenarioA -> Crash;
+        ScenarioB -> Truth;
+    }
+
+    // GLOBAL WIRING
+    GlobalTitle -> InputTape [style=invis];
+}

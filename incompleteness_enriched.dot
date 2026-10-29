@@ -1,0 +1,151 @@
+digraph IncompletenessEnriched {
+    // -------------------------------------------------------------
+    // VISUAL SETTINGS (Vertical Flow, Maximum Clarity)
+    // -------------------------------------------------------------
+    rankdir=TB; 
+    nodesep=0.6;
+    ranksep=0.8;
+    splines=line; // Avoid ortho/label issues
+    fontname="Inter";
+    pad=0.5;
+    
+    // Styling
+    node [fontname="Inter", fontsize=11, shape=record, style="filled,rounded", fillcolor="white", penwidth=1.2, margin=0.2];
+    edge [fontname="Inter", fontsize=10, color="#444444", penwidth=1.0, fontcolor="#444444"];
+
+    // Titles
+    node [shape=none, fillcolor="transparent", penwidth=0];
+    Title [label="THE INCOMPLETENESS THEOREM: ENRICHED DETAIL VIEW\n(The Logic Stack)", fontsize=22, fontcolor="#222222"];
+
+    // -------------------------------------------------------------
+    // LAYER 1: THE FOUNDATION (Arithmetic)
+    // -------------------------------------------------------------
+    subgraph cluster_Layer1 {
+        label = "Layer 1: The Raw Materials (Peano Arithmetic)";
+        style="filled";
+        color="#EEEEEE";
+        fontcolor="#333333";
+        node [fillcolor="#FAFAFA", color="#999999"];
+
+        Hardware [label="{The Symbols|0 (Zero)|S (Successor)|+ (Plus)|× (Times)|= (Equals)|¬ (Not)|∨ (Or)|∀ (For all)|( ) (Parens)|v (Variable)}"];
+        HardwareOps [label="{The Axioms (The Rules)|1. ¬(S(x) = 0)\n2. S(x)=S(y) → x=y\n3. x+0 = x\n4. x+S(y) = S(x+y)\n5. x×0 = 0\n6. x×S(y) = (x×y)+x}"];
+        
+        Hardware -> HardwareOps [label="governed by"];
+    }
+
+    // -------------------------------------------------------------
+    // LAYER 2: THE ENCODING (The Map)
+    // -------------------------------------------------------------
+    subgraph cluster_Layer2 {
+        label = "Layer 2: The Map (Syntax ↔ Numbers)";
+        style="filled";
+        color="#E3F2FD";
+        fontcolor="#0D47A1";
+        node [fillcolor="#FFFFFF", color="#64B5F6"];
+
+        // Detailed Symbol Table
+        SymTable [label="{SYMBOL MAP (The Dictionary)|{'0': 1}|{'S': 3}|{'=': 5}|{'¬': 7}|{'∨': 9}|{'∀': 11}|{'(': 13}|{')': 15}|{'v': 17}|{'x': 19}|{'y': 21}}"];
+        
+        // Detailed Example
+        subgraph cluster_Calc {
+            label = "Detailed Calculation: '¬(0=0)'";
+            style="dashed";
+            color="#90CAF9";
+            
+            Step2_1 [label="1. String:  ¬   (   0   =   0   )"];
+            Step2_2 [label="2. Codes:   7  13   1   5   1  15"];
+            Step2_3 [label="3. Primes:  2   3   5   7  11  13"];
+            Step2_4 [label="4. Powers: 2⁷ · 3¹³ · 5¹ · 7⁵ · 11¹ · 13¹⁵"];
+            Step2_5 [label="5. Result: 24,794,911,296,000..."];
+            
+            Step2_1 -> Step2_2 -> Step2_3 -> Step2_4 -> Step2_5;
+        }
+        
+        SymTable -> Step2_2 [label="translates"];
+    }
+
+    // -------------------------------------------------------------
+    // LAYER 3: THE PROOF CHECKER (The Machine)
+    // -------------------------------------------------------------
+    subgraph cluster_Layer3 {
+        label = "Layer 3: The Proof Checker (Recursion)";
+        style="filled";
+        color="#E8F5E9";
+        fontcolor="#1B5E20";
+        node [fillcolor="#FFFFFF", color="#81C784"];
+
+        // The exact logic of CheckProof
+        CheckLogic [label="{FUNCTION: IsProof(x, y)|Input: Number x (The Proof), Number y (The Theorem)\n\nLOGIC STEPS:\n1. Factorize x into list of numbers: [p₁, p₂, ..., pₙ]\n2. Loop through each p_i:\n   a. Is p_i a logical axiom? (Check bits)\n   b. Is p_i derived from earlier steps via Modus Ponens?\n      (Do ∃j,k < i such that p_k codes 'p_j → p_i'?)\n3. Check if final step pₙ == y\n\nOUTPUT: Returns 1 (True) or 0 (False)}"];
+
+        TruthExists [label="KEY CONCEPT:\nThis entire function is just + and × checks.\nThe System T can prove \"IsProof(a,b)=1\" if it's true."];
+        
+        CheckLogic -> TruthExists;
+    }
+
+    // -------------------------------------------------------------
+    // LAYER 4: THE SUBSTITUTION (The Logic Bomb)
+    // -------------------------------------------------------------
+    subgraph cluster_Layer4 {
+        label = "Layer 4: The Substitution (Self-Reference)";
+        style="filled";
+        color="#F3E5F5";
+        fontcolor="#4A148C";
+        node [fillcolor="#FFFFFF", color="#BA68C8"];
+
+        SubAlgo [label="{ALGORITHM: sub(n, k)|Input: Formula #n, Number k\nGoal: Put k inside n\n\n1. Decode n → string\n2. Scan for variable symbol 'v' (Code 17)\n3. Construct Numeral for k: S(S(S...0))...\n   (This is a sequence of S codes and a 0 code)\n4. Splice the Numeral sequence into the string\n5. Re-encode to new Big Integer}"];
+        
+        SubExample [label="{TRACE: sub('v=0', 1)|\n1. 'v=0' → Codes [17, 5, 1]\n2. Target 'v' is at index 0\n3. Numeral 1 is 'S(0)' → Codes [3, 13, 1, 15]\n4. Splice: [3, 13, 1, 15, 5, 1]\n5. New String: 'S(0)=0' (1 equals 0)}"];
+
+        SubAlgo -> SubExample [label="example execution"];
+    }
+
+    // -------------------------------------------------------------
+    // LAYER 5: THE DIAGONAL (Building G)
+    // -------------------------------------------------------------
+    subgraph cluster_Layer5 {
+        label = "Layer 5: The Diagonal (The Trap)";
+        style="filled";
+        color="#FFF3E0";
+        fontcolor="#E65100";
+        node [fillcolor="#FFFFFF", color="#FFB74D"];
+
+        // Step 1: The Unprovable Property
+        PropU [label="{1. The Predicate U(x)|\"Formula #x is Not Provable\"\n\nFormal: ¬∃p IsProof(p, x)}"];
+
+        // Step 2: The Self-Call
+        DiagFunc [label="{2. The Diagonalization|\"Substitute a number into U(x)\"\n\nWe want to substitute the code of U(x) ITSELF.}"];
+
+        // Step 3: Calculation
+        DiagCalc [label="{3. The Calculation|\nLet u = GödelNumber(U(x))\nDef G = sub(u, u)\n\n(We put 'u' into 'U(x)')}"];
+        
+        // Step 4: The Result
+        G_Meaning [label="{4. The Sentence G (Result)|\nG ↔ \"Formula #sub(u,u) is Not Provable\"\nG ↔ \"Formula #G is Not Provable\"\n\nG says: \"I HAVE NO PROOF\"}"];
+
+        PropU -> DiagFunc -> DiagCalc -> G_Meaning;
+        SubAlgo -> DiagCalc [label="mechanizes", style=dashed];
+    }
+
+    // -------------------------------------------------------------
+    // LAYER 6: THE CHECKMATE (Conclusion)
+    // -------------------------------------------------------------
+    subgraph cluster_Layer6 {
+        label = "Layer 6: The Checkmate";
+        style="filled";
+        color="#FFEBEE";
+        fontcolor="#B71C1C";
+        node [fillcolor="#FFFFFF", color="#E57373"];
+
+        Assumption [label="HYPOTHESIS: System T is Consistent\n(It never proves False things)", shape=diamond, fillcolor="#FFCDD2"];
+
+        BranchProve [label="{CASE 1: T proves G|\n1. T says \"G is true\"\n2. That means T found a proof for G\n3. Proof Checker verifies this proof exists\n4. So \"∃p IsProof(p, G)\" is TRUE\n5. But G says \"¬∃p IsProof(p, G)\"\n6. T has proven P and ¬P.\n\nCONTRADICTION: T IS BROKEN}"];
+        
+        BranchNoProve [label="{CASE 2: T assumes G is False|\n1. If G is False, then \"I have no proof\" is False\n2. Which means \"I HAVE a proof\" is True\n3. So there is a proof for G\n4. But if there is a proof, G is True!\n\nCONTRADICTION: T IS BROKEN}"];
+        
+        Conclusion [label="{CONCLUSION: T cannot decide G|\nTo save Consistency, T simply cannot prove G.\nBut that means G (which says \"I have no proof\") matches reality.\n\nG IS TRUE, BUT UNPROVABLE.}", shape=doubleoctagon, fillcolor="#FFD700"];
+
+        Assumption -> BranchProve [label="Attempt Proof"];
+        Assumption -> BranchNoProve [label="Attempt Disproof"];
+        BranchProve -> Conclusion [label="Impossible"];
+        BranchNoProve -> Conclusion [label="Impossible"];
+    }
+}

@@ -1,0 +1,72 @@
+digraph IncompletenessTheorem {
+    // Basic Graph Settings
+    rankdir=TB; // Top to Bottom
+    compound=true; // Allow edges between clusters
+    fontname="Helvetica";
+    node [fontname="Helvetica", shape=box, style="filled", fillcolor="white"];
+    edge [fontname="Helvetica"];
+
+    // Root Goal
+    node [shape=doubleoctagon, fillcolor="#FFD700", style="filled,rounded"];
+    Root [label="Root Goal:\nTheory T is Incomplete\n(∃G: T ⊬ G and T ⊬ ¬G)"];
+
+    // Branch 1: The Compiler
+    subgraph cluster_branch1 {
+        label = "Branch 1: The Compiler (Arithmetization)\nGoal: Compile Meta-logic to Object-logic";
+        style=filled;
+        color=lightgrey;
+        node [style="filled", fillcolor="aliceblue"];
+
+        Node1_1 [label="Node 1.1: Gödel Numbering\n(The Encoder)\nInput: Syntax\nOutput: ℕ\nMap: φ ↦ ⌈φ⌉"];
+        Node1_2 [label="Node 1.2: Primitive Recursion\n(The Standard Library)\nBasic ops are P.R.\nSignificance: Always terminate"];
+        Node1_3 [label="Node 1.3: The Proof Checker\n(is_proof_of)\nPrf(x, y) is Decidable\nT ⊢ φ ⇒ T ⊢ ∃x, Prf(x, ⌈φ⌉)"];
+
+        // Internal Dependencies
+        Node1_2 -> Node1_1 [label="encodes ops on"];
+        Node1_3 -> Node1_2 [label="built from"];
+    }
+
+    // Branch 2: The Quine
+    subgraph cluster_branch2 {
+        label = "Branch 2: The Quine (The Fixed Point)\nGoal: Self-referential mechanism";
+        style=filled;
+        color=lightgrey;
+        node [style="filled", fillcolor="mistyrose"];
+
+        Node2_1 [label="Node 2.1: Substitution Function\nsub(n, k)\nReplaces var #0 with k\nStatus: P.R."];
+        Node2_2 [label="Node 2.2: Diagonalization Lemma\n(The API)\n∀A(x), ∃D: T ⊢ D ↔ A(⌈D⌉)"];
+        
+        // Internal Dependencies
+        Node2_2 -> Node2_1 [label="uses"];
+    }
+
+    // Branch 3: The Execution
+    subgraph cluster_branch3 {
+        label = "Branch 3: The Execution (The Logic)\nGoal: Run the exploit";
+        style=filled;
+        color=lightgrey;
+        node [style="filled", fillcolor="lightyellow"];
+
+        Node3_1 [label="Node 3.1: Define Predicate\nP(y) ≡ ¬∃x, Prf(x, y)\n(Unprovability)"];
+        Node3_2 [label="Node 3.2: Construct G\nApply Diagonal Lemma to P(y)\nT ⊢ G ↔ ¬∃x, Prf(x, ⌈G⌉)"];
+        Node3_3 [label="Node 3.3: Consistency Proof\n(The Contradiction)\nCase A: T ⊢ G ⇒ Contradiction\nCase B: T ⊢ ¬G ⇒ Contradiction"];
+
+        // Internal Dependencies
+        Node3_2 -> Node3_1 [label="uses predicate"];
+        Node3_3 -> Node3_2 [label="analyzes"];
+    }
+
+    // Cross-Branch Dependencies
+    
+    // Construct G uses Diagonal Lemma
+    Node3_2 -> Node2_2 [label="call: Diagonalize", style=dashed, color=blue];
+    
+    // Define Predicate uses Proof Checker
+    Node3_1 -> Node1_3 [label="uses Prf relation", style=dashed, color=blue];
+
+    // Substitution relies on Primitive Recursion validity
+    Node2_1 -> Node1_2 [label="is P.R.", style=dashed, color=gray];
+
+    // Main Execution Flow
+    Root -> Node3_3 [label="proven by", penwidth=2.0];
+}

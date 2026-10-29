@@ -1,0 +1,186 @@
+digraph IncompletenessTheorem {
+    // Basic Graph Settings
+    rankdir=TB;
+    compound=true;
+    fontname="Helvetica";
+    splines=ortho;
+    nodesep=0.8;
+    ranksep=1.0;
+    
+    // Default Node Styles
+    node [fontname="Helvetica", shape=record, style="filled", fillcolor="white", fontsize=10];
+    edge [fontname="Helvetica", fontsize=9];
+
+    // Root Goal
+    node [shape=note, fillcolor="#FFD700", fontsize=14, margin=0.2];
+    Root [label="The First Incompleteness Theorem\nT is consistent ⇒ T is incomplete\n(∃G: T ⊬ G ∧ T ⊬ ¬G)"];
+
+    // ---------------------------------------------------------
+    // BRANCH 1: ARITHMETIZATION (THE COMPILER)
+    // ---------------------------------------------------------
+    subgraph cluster_branch1 {
+        label = "Layer 1: Arithmetization (Syntax → Arithmetic)";
+        style="filled";
+        color="#E6F3FF"; // Light Blue
+        fontcolor="#003366";
+        node [fillcolor="#F0F8FF", color="#4682B4"];
+
+        // 1.1 Encoding
+        subgraph cluster_encoding {
+            label = "1.1 The Encoder (Gödel Numbering)";
+            style="dashed";
+            color="#4682B4";
+            
+            SymMap [label="{Symbol Mapping|'0' ↦ 1\n'S' ↦ 3\n'=' ↦ 5\n'¬' ↦ 7\n...}"];
+            PrimeEnc [label="{Prime Factorization|Seq(x₁, ..., xₖ) = 2^{x₁} · 3^{x₂} · ... · pₖ^{xₖ}}"];
+            FormEnc [label="{Formula Encoding|Example: '¬(0=0)'\n↓\n[7, 9, 1, 5, 1, 11]\n↓\n2⁷·3⁹·5¹·7⁵·11¹·13¹¹}"];
+            
+            SymMap -> PrimeEnc [label="provides atoms"];
+            PrimeEnc -> FormEnc [label="encodes sequences"];
+        }
+
+        // 1.2 Primitive Recursion
+        subgraph cluster_pr {
+            label = "1.2 The Kernel (Primitive Recursive Functions)";
+            style="dashed";
+            color="#4682B4";
+
+            BasicOps [label="{Basic PR Function|Zero(x) = 0\nSucc(x) = x+1\nProj(xᵢ) = xᵢ\nComp(f, g)\nRec(f, g)}"];
+            DerivedOps [label="{Derived Ops|Add(x,y)\nMult(x,y)\nExp(x,y)\nIsPrime(x)\nNthPrime(i)}"];
+            SeqOps [label="{Sequence Ops|Len(s)\nItemAt(s, i)\nConcat(s1, s2)\nSubString(s, i, j)}"];
+
+            BasicOps -> DerivedOps [label="builds"];
+            DerivedOps -> SeqOps [label="enables"];
+        }
+
+        // 1.3 Proof Checking
+        subgraph cluster_prf {
+            label = "1.3 The Verifier (Proof Relations)";
+            style="dashed";
+            color="#4682B4";
+
+            IsAxiom [label="{IsAxiom(x)|Logical Axioms (p∨p→p,...)\nPeano Axioms (¬S(x)=0,...)\nEquality Axioms}"];
+            IsRule [label="{Inference Rules|ModusPonens(p, q)\nGen(p, v)}"];
+            IsProofSeq [label="{IsProofSeq(x)|x is seq [p₁...pₙ]\n∀i: pᵢ is Axiom ∨\nDerived from prev via Rules}"];
+            PrfDef [label="{Prf(x, y)|x encodes a valid proof\nof formula y}"];
+
+            SeqOps -> IsProofSeq [label="parses proofs"];
+            IsAxiom -> IsProofSeq [label="validates steps"];
+            IsRule -> IsProofSeq [label="validates steps"];
+            IsProofSeq -> PrfDef [label="defines relation"];
+        }
+    }
+
+    // ---------------------------------------------------------
+    // BRANCH 2: THE QUINE (SELF-REFERENCE)
+    // ---------------------------------------------------------
+    subgraph cluster_branch2 {
+        label = "Layer 2: The Quine (Diagonalization)";
+        style="filled";
+        color="#FFF0F5"; // Lavender Blush
+        fontcolor="#660033";
+        node [fillcolor="#FFF5F8", color="#C71585"];
+
+        // 2.1 Substitution
+        subgraph cluster_sub {
+            label = "2.1 Substitution Function";
+            style="dashed";
+            color="#C71585";
+            
+            SubDef [label="{sub(n, k)|Input: Formula code n, Number k\n\n1. Decode n to sequence\n2. Locate variable 'v₀' (symbol 19)\n3. Replace 'v₀' with Numeral(k)\n4. Re-encode}"];
+            Numeral [label="{Numeral(k)|Represents k in syntax\nS(S(...S(0)...))\n(k times)}"];
+            
+            Numeral -> SubDef [label="generates term"];
+        }
+
+        // 2.2 Diagonal Lemma
+        subgraph cluster_diag {
+            label = "2.2 The Diagonalization Lemma";
+            style="dashed";
+            color="#C71585";
+
+            DiagInput [label="Input Formula A(x)"];
+            Carnap [label="{Carnap Fixed Point|Define C(x) = A(sub(x, x))}"];
+            CodeOfC [label="m = ⌈C(x)⌉"];
+            DiagSent [label="{Sentence D|D = C(m)\n= A(sub(m, m))\n= A(⌈C(m)⌉)\n= A(⌈D⌉)}"];
+            
+            ResultDiag [label="T ⊢ D ↔ A(⌈D⌉)"];
+
+            SubDef -> Carnap [label="uses sub"];
+            Carnap -> CodeOfC [label="arithmetize"];
+            CodeOfC -> DiagSent [label="self-apply"];
+            DiagSent -> ResultDiag [label="proven equivalence"];
+        }
+    }
+
+    // ---------------------------------------------------------
+    // BRANCH 3: THE EXECUTION (LOGIC BOMB)
+    // ---------------------------------------------------------
+    subgraph cluster_branch3 {
+        label = "Layer 3: The Execution (Contradiction)";
+        style="filled";
+        color="#FFFFE0"; // Light Yellow
+        fontcolor="#8B4500";
+        node [fillcolor="#FFFFF0", color="#DAA520"];
+
+        // 3.1 Define Predicate
+        subgraph cluster_pred {
+            label = "3.1 Target Predicate";
+            style="dashed";
+            color="#DAA520";
+            
+            PredP [label="{P(y) ≡ ¬∃x Prf(x, y)|'y is not provable'\n(Defined using Prf from L1)}"];
+        }
+
+        // 3.2 Construct G
+        subgraph cluster_g {
+            label = "3.2 Constructing G";
+            style="dashed";
+            color="#DAA520";
+            
+            ApplyDiag [label="{Apply Diagonal Lemma|input A(x) = ¬∃z Prf(z, x)}"];
+            SentenceG [label="{Sentence G|G ↔ ¬∃x Prf(x, ⌈G⌉)}"];
+            Meaning [label="Meaning:\n'G says it has no proof'"];
+
+            PredP -> ApplyDiag [label="target"];
+            ApplyDiag -> SentenceG [label="yields"];
+            SentenceG -> Meaning;
+        }
+
+        // 3.3 The Contradiction
+        subgraph cluster_proof {
+            label = "3.3 Consistency Proof";
+            style="dashed";
+            color="#DAA520";
+
+            AssumeProv [label="Assume T ⊢ G"];
+            ProofExists [label="Then ∃k: Prf(k, ⌈G⌉)"];
+            SystemVerifies [label="System proves:\n T ⊢ ∃x Prf(x, ⌈G⌉)"];
+            GAsserts [label="But G asserts:\n ¬∃x Prf(x, ⌈G⌉)"];
+            Contra1 [label="{Contradiction!|T ⊢ p ∧ ¬p\n(T is inconsistent)}"];
+
+            AssumeProv -> ProofExists [label="external truth"];
+            ProofExists -> SystemVerifies [label="Σ₁-completeness\n(If P.R. is true, T proves it)"];
+            AssumeProv -> GAsserts [label="definition of G"];
+            SystemVerifies -> Contra1 [label="clash"];
+            GAsserts -> Contra1 [label="clash"];
+        }
+    }
+
+    // ---------------------------------------------------------
+    // GLOBAL DEPENDENCIES
+    // ---------------------------------------------------------
+
+    // Arithmetization Layer feeds everything
+    SeqOps -> SubDef [label="string manip", style=dotted];
+    PrfDef -> PredP [label="basis of", style=bold];
+
+    // Diagonalization uses Sub
+    DiagInput -> ResultDiag [label="transforms"];
+
+    // Logic Layer uses Diagonalization
+    ResultDiag -> ApplyDiag [label="mechanism", style=bold];
+
+    // Final flow
+    Contra1 -> Root [label="implies T ⊬ G", penwidth=2];
+}

@@ -1,0 +1,67 @@
+digraph Stage4 {
+    rankdir=TB;
+    nodesep=0.7;
+    splines=ortho;
+    fontname="Inter";
+    pad=0.2;
+    
+    node [fontname="Inter", fontsize=11, shape=plain, style=filled, fillcolor="white"];
+    edge [fontname="Inter", fontsize=10, color="#555555", penwidth=1.2];
+
+    Title [shape=plaintext, label="STAGE 4: THE DIAGONAL TRAP\n(Making the System Point at Itself)", fontsize=20];
+
+    // 1. The Predicate
+    Predicate [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#FFF3E0">
+            <tr><td colspan="2" bgcolor="#FF6F00"><font color="white"><b>STEP 1: THE "UNPROVABLE" TEMPLATE</b></font></td></tr>
+            <tr>
+                <td><b>Formula U(v):</b></td>
+                <td><font point-size="14"><b>¬ ∃x IsProof( x, v )</b></font></td>
+            </tr>
+            <tr>
+                <td><b>Meaning:</b></td>
+                <td>"There is no proof for the formula with code v"</td>
+            </tr>
+            <tr>
+                <td><b>The Code:</b></td>
+                <td>Let <b>u</b> be the Godel Number of this entire formula.</td>
+            </tr>
+        </table>
+    >];
+
+    // 2. The Move
+    Operation [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#FFE0B2">
+            <tr><td bgcolor="#F57C00"><font color="white"><b>STEP 2: THE SELF-INJECTION</b></font></td></tr>
+            <tr><td>We calculate: <b>sub( u, u )</b></td></tr>
+            <tr><td><i>We take the formula U (code u)...</i></td></tr>
+            <tr><td><i>And we replace its variable 'v' with ITS OWN CODE 'u'.</i></td></tr>
+        </table>
+    >];
+
+    // 3. The Result
+    SentenceG [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#FFCCBC">
+            <tr><td colspan="2" bgcolor="#D84315"><font color="white"><b>STEP 3: THE MONSTER "G"</b></font></td></tr>
+            <tr>
+                <td><b>The Math:</b></td>
+                <td>G ↔ ¬ ∃x IsProof( x, <b>sub(u, u)</b> )</td>
+            </tr>
+            <tr>
+                <td><b>Translation:</b></td>
+                <td>"There is no proof for [The formula you get when you put u into U]"</td>
+            </tr>
+            <tr>
+                <td><b>Wait...</b></td>
+                <td>[The formula you get when you put u into U] <b>IS G ITSELF!</b></td>
+            </tr>
+            <tr>
+                <td><b>Final Meaning:</b></td>
+                <td><font point-size="14"><b>"There is no proof for ME."</b></font></td>
+            </tr>
+        </table>
+    >];
+
+    Predicate -> Operation [label="feed u into u"];
+    Operation -> SentenceG [label="creates"];
+}

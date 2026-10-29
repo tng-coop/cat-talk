@@ -1,0 +1,77 @@
+digraph Stage5 {
+    rankdir=TB;
+    nodesep=0.7;
+    splines=ortho;
+    fontname="Inter";
+    pad=0.2;
+    
+    node [fontname="Inter", fontsize=11, shape=plain, style=filled, fillcolor="white"];
+    edge [fontname="Inter", fontsize=10, color="#555555", penwidth=1.2];
+
+    Title [shape=plaintext, label="STAGE 5: THE COLLAPSE\n(Truth vs Provability)", fontsize=20];
+
+    // 1. The Setup
+    Setup [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#FFEBEE">
+            <tr><td colspan="2" bgcolor="#C62828"><font color="white"><b>THE SITUATION</b></font></td></tr>
+            <tr>
+                <td><b>Sentence G:</b></td>
+                <td>"I am unprovable."</td>
+            </tr>
+            <tr>
+                <td><b>The System T:</b></td>
+                <td>A machine that finds Truths.</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Question: Can T prove G?</b></td>
+            </tr>
+        </table>
+    >];
+
+    // 2. Compare
+    Comparison [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="white">
+            <tr>
+                <td width="300" bgcolor="#FFCDD2"><b>SCENARIO A: YES<br/>(T proves G)</b></td>
+                <td width="300" bgcolor="#E8F5E9"><b>SCENARIO B: NO<br/>(T cannot prove G)</b></td>
+            </tr>
+            <tr>
+                <td>1. T finds a proof for G.</td>
+                <td>1. T searches forever, finds no proof.</td>
+            </tr>
+            <tr>
+                <td>2. The "IsProof" checker confirms it.</td>
+                <td>2. So "G is unprovable" is a <b>FACT</b>.</td>
+            </tr>
+            <tr>
+                <td>3. So T says "G is True".</td>
+                <td>3. G says "I am unprovable".</td>
+            </tr>
+            <tr>
+                <td>4. <b>BUT G SAYS:</b> "I am unprovable".</td>
+                <td>4. So G matches the facts!</td>
+            </tr>
+            <tr>
+                <td>5. T has proved a <b>LIE</b>.</td>
+                <td>5. <b>G IS TRUE.</b></td>
+            </tr>
+            <tr>
+                <td><font color="#B71C1C"><b>MATH IS BROKEN (Inconsistent)</b></font></td>
+                <td><font color="#1B5E20"><b>MATH IS BLIND (Incomplete)</b></font></td>
+            </tr>
+        </table>
+    >];
+
+    // 3. Conclusion
+    Result [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#FFF9C4">
+            <tr><td bgcolor="#FBC02D"><font color="white"><b>THE VERDICT</b></font></td></tr>
+            <tr><td>A broken system is useless (1=2).</td></tr>
+            <tr><td>So we MUST accept Scenario B.</td></tr>
+            <tr><td><b>True statements exist that cannot be proved.</b></td></tr>
+        </table>
+    >];
+
+    Setup -> Comparison [label="analyze"];
+    Comparison -> Result [label="only viable option"];
+}

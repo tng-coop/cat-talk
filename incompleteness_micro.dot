@@ -1,0 +1,154 @@
+digraph IncompletenessMicro {
+    // -------------------------------------------------------------
+    // VISUAL SETTINGS (Clean, readable, step-by-step flow)
+    // -------------------------------------------------------------
+    rankdir=TB; // Top to Bottom flow
+    nodesep=0.6; // Evaluation separation
+    ranksep=0.8; // Time separation
+    splines=ortho; // Clean lines
+    fontname="Inter"; 
+    
+    // Default Styling
+    node [fontname="Inter", fontsize=11, shape=rect, style="filled,rounded", fillcolor="white", penwidth=1.5];
+    edge [fontname="Inter", fontsize=10, color="#555555", penwidth=1.2];
+
+    // Titles
+    node [shape=none, fillcolor="transparent", penwidth=0];
+    Title [label="THE FIRST INCOMPLETENESS THEOREM\n(Step-by-Step Mechanism)", fontsize=18, fontcolor="#333333"];
+    
+    // -------------------------------------------------------------
+    // PHASE 1: THE CONVERSION (Turning Math into Numbers)
+    // Goal: Show that formulas are just numbers.
+    // -------------------------------------------------------------
+    subgraph cluster_phase1 {
+        label = "PHASE 1: EVERYTHING IS A NUMBER\n(No magic, just multiplication)";
+        style="filled";
+        color="#E3F2FD"; // Light Blue
+        fontcolor="#1565C0";
+        node [fillcolor="#FFFFFF", color="#64B5F6"];
+
+        // Step 1: Specific Mapping
+        Step1_1 [label="STEP 1: The Symbol List\nWe agree on a list number for every sign:"];
+        SymbolTable [label="{SYMBOL|CODE}|{'~' (Not)|1}|{'=' (Equals)|2}|{'0' (Zero)|3}|{'S' (Next)|4}|{'v' (Variable)|5}", shape=record];
+        
+        // Step 2: The Formula
+        Step1_2 [label="STEP 2: Take a simple formula\nExample: '~(0=0)'"];
+        SeqList [label="Break it into a list of codes:\n[~, (, 0, =, 0, )]\n↓\n[1, 8, 3, 2, 3, 9]"];
+
+        // Step 3: The Prime Number Locking
+        Step1_3 [label="STEP 3: Lock it with Primes\nUse the first prime numbers:\n2, 3, 5, 7, 11, 13..."];
+        Calculation [label="STEP 4: Calculate the Big Number\n2¹ × 3⁸ × 5³ × 7² × 11³ × 13⁹\n(Multiply them all together)"];
+        BigNum [label="RESULT: One Huge Number\n(Let's call it N)\nThis number N contains the entire formula."];
+
+         // Flow
+        Title -> Step1_1 [style=invis];
+        Step1_1 -> SymbolTable;
+        SymbolTable -> Step1_2 [label="use this list"];
+        Step1_2 -> SeqList;
+        SeqList -> Step1_3 [label="assign to exponents"];
+        Step1_3 -> Calculation;
+        Calculation -> BigNum;
+    }
+
+    // -------------------------------------------------------------
+    // PHASE 2: THE MACHINE (Checking Numbers with Math)
+    // Goal: Show that 'Proof' is just checking if numbers divide evenly.
+    // -------------------------------------------------------------
+    subgraph cluster_phase2 {
+        label = "PHASE 2: CHECKING PROOFS IS JUST MATH\n(No reading, just dividing)";
+        style="filled";
+        color="#FFF3E0"; // Light Orange
+        fontcolor="#E65100";
+        node [fillcolor="#FFFFFF", color="#FFB74D"];
+
+        // Step 1: What is a proof?
+        Step2_1 [label="What is a 'Proof'?\nA proof is just a list of formulas.\nSo a proof is just a list of Big Numbers."];
+        
+        // Step 2: The Checker
+        Step2_2 [label="The 'IsProof' Function\nIt takes two numbers: X and Y.\nchecks 'Is X a proof for Y?'"];
+        
+        // Step 3: The Mechanism
+        Mechanism [label="{HOW IT CHECKS (Without eyes)|1. Decompose X into list of steps|2. Check if Step 1 is an axiom (Is 2^k factor?)|3. Check if Step N comes from Step N-1|4. Check if Last Step matches Y}"];
+        
+        Step2_3 [label="CRITICAL FACT:\nMath can check this using only + and ×.\nIt doesn't need to 'understand' meanings.\nIt just checks divisibility."];
+
+        BigNum -> Step2_1 [label="formulas are numbers"];
+        Step2_1 -> Step2_2;
+        Step2_2 -> Mechanism;
+        Mechanism -> Step2_3;
+    }
+
+    // -------------------------------------------------------------
+    // PHASE 3: THE TRICK (Building the Self-Reference)
+    // Goal: Show exact substitution construction without 'mirror' analogy.
+    // -------------------------------------------------------------
+    subgraph cluster_phase3 {
+        label = "PHASE 3: MAKING IT TALK ABOUT ITSELF\n(The Diagonal Method)";
+        style="filled";
+        color="#F3E5F5"; // Light Purple
+        fontcolor="#4A148C";
+        node [fillcolor="#FFFFFF", color="#BA68C8"];
+
+        // Step 1: The Substitution Function
+        Step3_1 [label="FUNCTION: SUB(n, k)\nInput: A formula number 'n' and a number 'k'."];
+        Step3_2 [label="ACTION:\n1. Decode 'n' back to a string.\n2. Find the symbol 'v' (variable).\n3. Erase 'v'.\n4. Write the number 'k' in its place.\n5. Re-calculate the Big Number."];
+        
+        // Step 2: The Unprovable Predicate
+        Step3_3 [label="THE STATEMENT U(x):\n'There is no number P that proves the formula with number x'"];
+        
+        // Step 3: The Diagonal
+        Step3_4 [label="THE TRICK:\nPut the code of U(x) INSIDE U(x)."];
+        
+        FinalSent [label="SENTENCE G:\n'There is no proof for the formula you get\nwhen you put THIS NUMBER into THIS FORMULA'"];
+        
+        Meaning [label="LITERAL MEANING:\nG says: 'I am unprovable'"];
+
+        Step2_3 -> Step3_1 [label="used here"];
+        Step3_1 -> Step3_2;
+        Step3_2 -> Step3_3 [label="we use this tool to build"];
+        Step3_3 -> Step3_4;
+        Step3_4 -> FinalSent;
+        FinalSent -> Meaning;
+    }
+
+    // -------------------------------------------------------------
+    // PHASE 4: THE CRASH (Logic Logic)
+    // Goal: Step-by-step logic bomb.
+    // -------------------------------------------------------------
+    subgraph cluster_phase4 {
+        label = "PHASE 4: THE SYSTEM BREAKS\n(The Contradiction)";
+        style="filled";
+        color="#FFEBEE"; // Light Red
+        fontcolor="#B71C1C";
+        node [fillcolor="#FFFFFF", color="#E57373"];
+
+        Question [label="THE ULTIMATE QUESTION:\nCan the system prove G?", shape=diamond, style="filled", fillcolor="#FFCDD2"];
+        
+        // Path A: Yes
+        PathA [label="SCENARIO A:\nYES, Proof Exists."];
+        StepA_1 [label="1. If proof exists, there is a number P."];
+        StepA_2 [label="2. The 'IsProof' function checks P against G."];
+        StepA_3 [label="3. The math says 'Correct, P matches G'."];
+        StepA_4 [label="4. But G says 'No proof exists'."];
+        ResultA [label="CONTRADICTION:\nThe System proves a lie.\n(System is Broken/Inconsistent)"];
+
+        // Path B: No
+        PathB [label="SCENARIO B:\nNO, Proof Does Not Exist."];
+        StepB_1 [label="1. If no proof exists, G is telling the truth."];
+        StepB_2 [label="2. So G is TRUE."];
+        StepB_3 [label="3. But we just said there is no proof."];
+        ResultB [label="RESULT:\nA True statement that math cannot prove.\n(System is Incomplete)"];
+
+        Meaning -> Question;
+        Question -> PathA [label="Assume Yes"];
+        PathA -> StepA_1 -> StepA_2 -> StepA_3 -> StepA_4 -> ResultA;
+
+        Question -> PathB [label="Assume No"];
+        PathB -> StepB_1 -> StepB_2 -> StepB_3 -> ResultB;
+
+        FinalResult [label="CONCLUSION:\nScenario A is fatal (Math is broken).\nSo Scenario B must be real.\n\nTHERE ARE TRUE MATH STATEMENTS\nTHAT MATH CANNOT PROVE.", shape=doubleoctagon, fillcolor="#FFD700", fontsize=12];
+
+        ResultA -> FinalResult;
+        ResultB -> FinalResult;
+    }
+}

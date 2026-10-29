@@ -1,0 +1,222 @@
+digraph IncompletenessNano {
+    // -------------------------------------------------------------
+    // VISUAL SETTINGS (Maximum Detail, Structured Layout)
+    // -------------------------------------------------------------
+    rankdir=TB; 
+    nodesep=0.5;
+    ranksep=0.7;
+    splines=ortho;
+    fontname="Inter";
+    pad=0.5;
+    
+    // Styling
+    node [fontname="Inter", fontsize=10, shape=rect, style="filled,rounded", fillcolor="white", penwidth=1.0];
+    edge [fontname="Inter", fontsize=9, color="#666666", penwidth=1.0];
+
+    // Titles
+    node [shape=none, fillcolor="transparent", penwidth=0];
+    Title [label="THE FIRST INCOMPLETENESS THEOREM: NANO-SCALE EXPLODED VIEW\n(Every Nut and Bolt)", fontsize=24, fontcolor="#111111"];
+
+    // -------------------------------------------------------------
+    // CLUSTER A: THE HARDWARE (Peano Arithmetic)
+    // -------------------------------------------------------------
+    subgraph cluster_A {
+        label = "LAYER 1: THE HARDWARE (The Logic System T)";
+        style="filled";
+        color="#E0E0E0";
+        fontcolor="#333333";
+        node [fillcolor="#F5F5F5", color="#999999"];
+
+        HardwareDef [label="{Available Tools|0 (Zero)|S (Successor: +1)|+ (Addition)|× (Multiplication)|= (Equality)|¬, ∨, ∃ (Logic)}", shape=record];
+        HardwareRule [label="RULE: The system can ONLY talk about numbers.\nIt cannot talk about 'Truth' or 'Proofs'.\n(Or so it thinks...)"];
+    }
+
+    // -------------------------------------------------------------
+    // CLUSTER B: THE COMPILER (Gödel Numbering)
+    // -------------------------------------------------------------
+    subgraph cluster_B {
+        label = "LAYER 2: THE COMPILER (Syntax ↔ Number)";
+        style="filled";
+        color="#E3F2FD";
+        fontcolor="#0D47A1";
+        node [fillcolor="#FFFFFF", color="#64B5F6"];
+
+        // B1: Symbol Table
+        subgraph cluster_B1 {
+            label = "Step 2.1: The Symbol Map";
+            style="dashed";
+            color="#90CAF9";
+            
+            SymTable [label="{SYMBOL|CODE}|{0|1}|{S|3}|{~|5}|{=|7}|{(|9}|{)|11}|{v|13}", shape=record];
+        }
+
+        // B2: Encoding Example
+        subgraph cluster_B2 {
+            label = "Step 2.2: Encoding '~(0=0)'";
+            style="dashed";
+            color="#90CAF9";
+
+            Formula [label="Formula:   ~    (    0    =    0    )"];
+            Codes [label="Codes:     5    9    1    7    1   11"];
+            Primes [label="Primes:    2    3    5    7   11   13"];
+            Exponents [label="Power:    2⁵ × 3⁹ × 5¹ × 7⁷ × 11¹ × 13¹¹"];
+            ResultN [label="RESULT N = 24,794,911,296,000...\n(A huge integer)"];
+            
+            Formula -> Codes [label="lookup"];
+            Codes -> Exponents [label="exponentiate"];
+            Primes -> Exponents [label="base"];
+            Exponents -> ResultN [label="calculate"];
+        }
+        
+        B_KeyPoint [label="KEY INSIGHT:\nEvery possible math formula\nis just a specific positive integer.", shape=note, fillcolor="#FFF9C4"];
+    }
+
+    // -------------------------------------------------------------
+    // CLUSTER C: THE KERNEL (Primitive Recursion)
+    // -------------------------------------------------------------
+    subgraph cluster_C {
+        label = "LAYER 3: THE KERNEL (Decidable Functions)";
+        style="filled";
+        color="#E8F5E9";
+        fontcolor="#1B5E20";
+        node [fillcolor="#FFFFFF", color="#81C784"];
+
+        // C1: Primitives
+        subgraph cluster_C1 {
+            label = "Step 3.1: Assembly Instructions";
+            style="dashed";
+            color="#A5D6A7";
+            
+            PR_Ops [label="{The Atomic Ops|Zero(n) = 0|Succ(n) = n+1|Proj(a,b) = a}"];
+        }
+
+        // C2: Construction
+        subgraph cluster_C2 {
+            label = "Step 3.2: Building 'Proof Check'";
+            style="dashed";
+            color="#A5D6A7";
+
+            Op_Add [label="Add(x,y)\n(Repeated Succ)"];
+            Op_Mul [label="Mul(x,y)\n(Repeated Add)"];
+            Op_Prime [label="IsPrime(x)\n(Check divisors)"];
+            Op_Seq [label="GetItem(seq, n)\n(Prime factorization)"];
+            Op_IsProof [label="IsProof(x, y)\n1. Decode x into list\n2. Check each item is axiom\n3. Check logic rules\n4. Check last item is y"];
+            
+            PR_Ops -> Op_Add -> Op_Mul -> Op_Prime -> Op_Seq -> Op_IsProof;
+        }
+
+        C_KeyPoint [label="KEY INSIGHT:\n'Checking a proof' is not magic.\nIt is structurally identical to\n'Checking if 18 is even'.\nIt is just arithmetic.", shape=note, fillcolor="#FFF9C4"];
+    }
+
+    // -------------------------------------------------------------
+    // CLUSTER D: THE SUBSTITUTION (The Mechanism)
+    // -------------------------------------------------------------
+    subgraph cluster_D {
+        label = "LAYER 4: THE SUBSTITUTION (Variables)";
+        style="filled";
+        color="#F3E5F5";
+        fontcolor="#4A148C";
+        node [fillcolor="#FFFFFF", color="#BA68C8"];
+
+        Sub_Fun [label="FUNCTION: SUB(n, k)\n'In formula #n, replace var with number k'"];
+        
+        // D1: Step by Step
+        subgraph cluster_D1 {
+            label = "Trace: sub(code('v=0'), 5)";
+            style="dashed";
+            color="#CE93D8";
+
+            D_Input [label="Input n: Code for 'v=0'\nSequence: [13, 7, 1]"];
+            D_Target [label="Target: 'v' (Code 13)"];
+            D_Replace [label="Replacement: Numeral 5\n'S(S(S(S(S(0)))))'\nSequence: [3,9,3,9,3,9,3,9,3,9,1,11,11,11,11,11]"];
+            D_Rebuild [label="Rebuild: \nOld 'v' removed.\nNew sequence inserted.\nPrimes shifted/recalculated."];
+            D_Output [label="Output: Code for '5=0'"];
+            
+            D_Input -> D_Rebuild [label="scan"];
+            D_Target -> D_Rebuild [label="match"];
+            D_Replace -> D_Rebuild [label="insert"];
+            D_Rebuild -> D_Output;
+        }
+    }
+
+    // -------------------------------------------------------------
+    // CLUSTER E: THE DIAGONAL (The Self-Reference)
+    // -------------------------------------------------------------
+    subgraph cluster_E {
+        label = "LAYER 5: THE DIAGONAL (The Trap)";
+        style="filled";
+        color="#FFF3E0";
+        fontcolor="#E65100";
+        node [fillcolor="#FFFFFF", color="#FFB74D"];
+
+        // E1: The Unprovable Predicate
+        E_Pred [label="Start with Formula U(v):\n'There is NO number x\nsuch that x is a proof of formula v'\nLogic: ¬∃x IsProof(x, v)"];
+        
+        // E2: The Diagonalization
+        E_DiagStep1 [label="Step 5.1: Calculate Code of U(v)\nLet u = Code(U(v))"];
+        E_DiagStep2 [label="Step 5.2: The Diagonal Call\nCalculate g = sub(u, u)\nExpected Meaning:\n'Take U(v) and stuff its own code u into v'"];
+        E_DiagStep3 [label="Step 5.3: The Resulting Sentence G\nFormula G corresponds to number g.\nG says: 'There is no proof for sub(u,u)'\nG says: 'There is no proof for g'\nG says: 'There is no proof for ME'"];
+
+        E_Pred -> E_DiagStep1;
+        E_DiagStep1 -> E_DiagStep2;
+        E_DiagStep2 -> E_DiagStep3;
+    }
+
+    // -------------------------------------------------------------
+    // CLUSTER F: THE CRASH (Logic Logic)
+    // -------------------------------------------------------------
+    subgraph cluster_F {
+        label = "LAYER 6: THE CRASH (Checkmate)";
+        style="filled";
+        color="#FFEBEE";
+        fontcolor="#B71C1C";
+        node [fillcolor="#FFFFFF", color="#E57373"];
+
+        F_Start [label="Let's ask the System T:\n'Is G true?'", shape=diamond, fillcolor="#FFCDD2"];
+        
+        // Branch Yes
+        subgraph cluster_F_Yes {
+            label = "Scenario A: T proves G";
+            style="solid";
+            color="#EF9A9A";
+            
+            A1 [label="1. T ⊢ G"];
+            A2 [label="2. A proof number p exists."];
+            A3 [label="3. IsProof(p, g) is True."];
+            A4 [label="4. Because IsProof is just math,\nT proves 'IsProof(p, g) is True'."];
+            A5 [label="5. T proves '∃x IsProof(x, g)'."];
+            A6 [label="6. But G ITSELF says '¬∃x IsProof(x, g)'."];
+            A7 [label="7. T proves both YES and NO.\nCONTRADICTION.\nSystem Explodes."];
+            
+            A1 -> A2 -> A3 -> A4 -> A5 -> A7;
+            A6 -> A7;
+        }
+
+        // Branch No
+        subgraph cluster_F_No {
+            label = "Scenario B: T cannot prove G";
+            style="solid";
+            color="#A5D6A7";
+            
+            B1 [label="1. T ⊬ G"];
+            B2 [label="2. No proof number exists."];
+            B3 [label="3. So 'There is no proof of G' is FACTUALLY TRUE."];
+            B4 [label="4. G says 'There is no proof of G'."];
+            B5 [label="5. Therefore, G is TRUE."];
+            B6 [label="6. SYSTEM STATUS:\nG is True.\nBut T cannot prove it.\n(INCOMPLETENESS)"];
+            
+            B1 -> B2 -> B3 -> B4 -> B5 -> B6;
+        }
+
+        F_Start -> A1 [label="Assuming Provable"];
+        F_Start -> B1 [label="Assuming Unprovable"];
+    }
+
+    // Wiring
+    HardwareRule -> SymTable [style=dashed];
+    ResultN -> B_KeyPoint;
+    Op_IsProof -> C_KeyPoint;
+    C_KeyPoint -> Sub_Fun [style=dashed];
+    D_Output -> E_Pred [style=dashed];
+    E_DiagStep3 -> F_Start [label="Examine", penwidth=2];
+}

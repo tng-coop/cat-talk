@@ -1,0 +1,253 @@
+digraph IncompletenessComprehensive {
+    // -------------------------------------------------------------
+    // VISUAL SETTINGS
+    // -------------------------------------------------------------
+    rankdir=TB; 
+    nodesep=0.7;
+    ranksep=1.0;
+    splines=ortho; 
+    fontname="Inter";
+    pad=0.5;
+    
+    // Default Styling
+    node [fontname="Inter", fontsize=11, shape=plain, style=filled, fillcolor="white"];
+    edge [fontname="Inter", fontsize=10, color="#555555", penwidth=1.2, arrowhead=normal];
+
+    // Titles
+    Title [shape=plaintext, label="THE COMPLETE SELF-CONTAINED BLUEPRINT\n(No Prior Knowledge Validation)", fontsize=24, fontcolor="#111111"];
+
+    // -------------------------------------------------------------
+    // STAGE A: THE LANGUAGE (Definitions)
+    // -------------------------------------------------------------
+    subgraph cluster_StageA {
+        label = "STAGE 1: THE DICTIONARY (Reference)";
+        style="filled";
+        color="#E3F2FD";
+
+        // Full Reference Table
+        Dictionary [label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="white">
+                <tr><td colspan="3" bgcolor="#BBDEFB"><b>REFERENCE: THE SYMBOL CODE MAP</b></td></tr>
+                <tr><td><b>Meaning</b></td><td><b>Symbol</b></td><td><b>Number Code</b></td></tr>
+                <tr><td>Logic "NOT"</td><td>¬</td><td><b>1</b></td></tr>
+                <tr><td>Logic "OR"</td><td>∨</td><td><b>2</b></td></tr>
+                <tr><td>Logic "FOR ALL"</td><td>∀</td><td><b>3</b></td></tr>
+                <tr><td>Variable</td><td>v</td><td><b>4</b></td></tr>
+                <tr><td>Equals</td><td>=</td><td><b>5</b></td></tr>
+                <tr><td>Zero</td><td>0</td><td><b>6</b></td></tr>
+                <tr><td>Successor (+1)</td><td>S</td><td><b>7</b></td></tr>
+                <tr><td>Open Paren</td><td>(</td><td><b>8</b></td></tr>
+                <tr><td>Close Paren</td><td>)</td><td><b>9</b></td></tr>
+            </table>
+        >];
+
+        Premise [label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="white">
+                <tr><td bgcolor="#BBDEFB"><b>CORE PREMISE</b></td></tr>
+                <tr><td>Because every symbol is a number...</td></tr>
+                <tr><td>Every FORMULA is just a list of numbers.</td></tr>
+            </table>
+        >];
+        
+        Dictionary -> Premise;
+    }
+
+    // -------------------------------------------------------------
+    // STAGE B: THE ENCODING (Example)
+    // -------------------------------------------------------------
+    subgraph cluster_StageB {
+        label = "STAGE 2: TURNING A SENTENCE INTO A NUMBER";
+        style="filled";
+        color="#E8F5E9";
+
+        // Step-by-step Encoding
+        EncodingTrace [label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="white">
+                <tr><td colspan="4" bgcolor="#C8E6C9"><b>EXAMPLE: ENCODING "¬(0=0)"</b></td></tr>
+                <tr>
+                    <td><b>Step 1: Symbols</b></td>
+                    <td>¬</td>
+                    <td>(</td>
+                    <td>0</td>
+                    <td>=</td>
+                    <td>0</td>
+                    <td>)</td>
+                </tr>
+                <tr>
+                    <td><b>Step 2: Look up Codes</b></td>
+                    <td>1</td>
+                    <td>8</td>
+                    <td>6</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>9</td>
+                </tr>
+                <tr>
+                    <td><b>Step 3: Prime Bases</b></td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>5</td>
+                    <td>7</td>
+                    <td>11</td>
+                    <td>13</td>
+                </tr>
+                <tr>
+                    <td><b>Step 4: Exponentiate</b></td>
+                    <td>2<sup>1</sup></td>
+                    <td>3<sup>8</sup></td>
+                    <td>5<sup>6</sup></td>
+                    <td>7<sup>5</sup></td>
+                    <td>11<sup>6</sup></td>
+                    <td>13<sup>9</sup></td>
+                </tr>
+                <tr>
+                    <td><b>Step 5: Multiply</b></td>
+                    <td colspan="6">2 · 6561 · 15625 · 16807 · 1771561 · ...</td>
+                </tr>
+                <tr>
+                    <td colspan="7"><b>FINAL NUMBER N = (A huge integer representing "0 is not 0")</b></td>
+                </tr>
+            </table>
+        >];
+
+        Premise -> EncodingTrace [xlabel="Applying Map"];
+    }
+
+    // -------------------------------------------------------------
+    // STAGE C: PROOF CHECKING MECHANICS
+    // -------------------------------------------------------------
+    subgraph cluster_StageC {
+        label = "STAGE 3: PROOF CHECKING (It's just Division)";
+        style="filled";
+        color="#FFF3E0";
+
+        // Explaining the "No Looking Up" logic
+        ProofMech [label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="white">
+                <tr><td colspan="2" bgcolor="#FFE0B2"><b>HOW THE MACHINE CHECKS PROOFS</b></td></tr>
+                <tr><td colspan="2"><i>Recall: A Proof is just a number P that holds a list of Steps.</i></td></tr>
+                <tr><td><b>Action</b></td><td><b>Math Operation</b></td></tr>
+                <tr><td>"Read Step 1"</td><td>Divide P by 2^k and check remainder.</td></tr>
+                <tr><td>"Is Step 1 an Axiom?"</td><td>Check if Step 1 number matches Axiom pattern (e.g. 5,6,5,6).</td></tr>
+                <tr><td>"Does Step 2 follow?"</td><td>Check arithmetic relation between Step 1 number and Step 2 number.</td></tr>
+                <tr><td colspan="2"><b>CRITICAL: This check never requires "understanding". It is 100% mechanical.</b></td></tr>
+            </table>
+        >];
+
+        EncodingTrace -> ProofMech [xlabel="Numbers define logic"];
+    }
+
+    // -------------------------------------------------------------
+    // STAGE D: THE SUBSTITUTION (Visualized)
+    // -------------------------------------------------------------
+    subgraph cluster_StageD {
+        label = "STAGE 4: THE 'SUB' FUNCTION (Self-Reference Tool)";
+        style="filled";
+        color="#F3E5F5";
+
+        // Visualizing the Splicing
+        SubVisual [label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="white">
+                <tr><td colspan="3" bgcolor="#E1BEE7"><b>THE sub(n, k) OPERATION</b></td></tr>
+                <tr><td colspan="3"><i>Goal: Replace variable 'v' (Code 4) with a specific number.</i></td></tr>
+                
+                <tr><td><b>Input String:</b></td><td>v = 0</td><td>(Codes: 4, 5, 6)</td></tr>
+                <tr><td><b>Target:</b></td><td>v</td><td>(Code 4)</td></tr>
+                <tr><td><b>Replace With:</b></td><td>Number 1</td><td>(Codes: 7, 8, 6, 9)<br/><i>(Recall: 1 is S(0))</i></td></tr>
+                
+                <tr><td><b>Result String:</b></td><td>S(0) = 0</td><td>(Codes: 7, 8, 6, 9, 5, 6)</td></tr>
+                <tr><td colspan="3"><b>We created a NEW number from the old parts.</b></td></tr>
+            </table>
+        >];
+
+        ProofMech -> SubVisual [style=invis];
+    }
+
+    // -------------------------------------------------------------
+    // STAGE E: THE DIAGONAL (Building the Paradox)
+    // -------------------------------------------------------------
+    subgraph cluster_StageE {
+        label = "STAGE 5: CONSTRUCTION OF G (Step-by-Step)";
+        style="filled";
+        color="#FCE4EC";
+
+        // Step 1: Variable Definition
+        Def [label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="white">
+                <tr><td bgcolor="#F8BBD0"><b>STEP 5.1: DEFINE UNPROVABILITY</b></td></tr>
+                <tr><td>Let <b>U(v)</b> be the formula: "The formula with number v has NO proof."</td></tr>
+                <tr><td>This formula U(v) corresponds to a huge number. <b>Call this number 'u'.</b></td></tr>
+            </table>
+        >];
+
+        // Step 2: The Input
+        InputStep [label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="white">
+                <tr><td bgcolor="#F8BBD0"><b>STEP 5.2: THE SELF-FEED</b></td></tr>
+                <tr><td>We feed the number <b>u</b> into the formula <b>U(v)</b>.</td></tr>
+                <tr><td>Operation: <b>sub(u, u)</b></td></tr>
+                <tr><td><i>(Put the code of the formula INTO the formula)</i></td></tr>
+            </table>
+        >];
+
+        // Step 3: The Result
+        G_Sent [label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="white">
+                <tr><td bgcolor="#F8BBD0"><b>STEP 5.3: SENTENCE G</b></td></tr>
+                <tr><td>Sentence G is the result of <b>sub(u, u)</b>.</td></tr>
+                <tr><td>G says: "Formula # sub(u,u) has NO proof."</td></tr>
+                <tr><td>G says: "Formula # G has NO proof."</td></tr>
+                <tr><td><b>G says: "I AM UNPROVABLE."</b></td></tr>
+            </table>
+        >];
+
+        SubVisual -> Def [xlabel="Tool Ready"];
+        Def -> InputStep;
+        InputStep -> G_Sent [xlabel="Result"];
+    }
+
+    // -------------------------------------------------------------
+    // STAGE F: THE CONCLUSION
+    // -------------------------------------------------------------
+    subgraph cluster_StageF {
+        label = "STAGE 6: THE FINAL COLLAPSE";
+        style="filled";
+        color="#FFEBEE";
+
+        LogicCrash [label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="white">
+                <tr><td colspan="3" bgcolor="#FFCDD2"><b>IS "G" PROVABLE?</b></td></tr>
+                
+                <tr>
+                    <td width="45%"><b>Hypothesis A: YES</b></td>
+                    <td rowspan="5" bgcolor="#CCCCCC"></td>
+                    <td width="45%"><b>Hypothesis B: NO</b></td>
+                </tr>
+                
+                <tr>
+                    <td>1. System proves G.</td>
+                    <td>1. System FAILS to prove G.</td>
+                </tr>
+                <tr>
+                    <td>2. Proof Checker allows it.</td>
+                    <td>2. G says "I have no proof".</td>
+                </tr>
+                <tr>
+                    <td>3. Since Checker works, G is True.</td>
+                    <td>3. So G is telling the truth.</td>
+                </tr>
+                <tr>
+                    <td>4. But G says "I have NO proof".<br/><b>CONTRADICTION!</b></td>
+                    <td>4. G is True.<br/><b>BUT UNPROVABLE.</b></td>
+                </tr>
+                
+                <tr>
+                    <td bgcolor="#FFCDD2"><b>IMPOSSIBLE</b><br/>(System is Broken)</td>
+                    <td bgcolor="#C8E6C9"><b>THE TRUTH</b><br/>(System is Incomplete)</td>
+                </tr>
+            </table>
+        >];
+
+        G_Sent -> LogicCrash [xlabel="Test it"];
+    }
+}

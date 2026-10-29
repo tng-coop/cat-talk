@@ -1,0 +1,218 @@
+digraph IncompletenessMax {
+    // -------------------------------------------------------------
+    // VISUAL SETTINGS (Flowchart Style)
+    // -------------------------------------------------------------
+    rankdir=TB; 
+    nodesep=0.5;
+    ranksep=0.6;
+    splines=ortho; 
+    fontname="Inter";
+    pad=0.5;
+    
+    // Default Styling
+    node [fontname="Inter", fontsize=10, shape=rect, style="filled,rounded", fillcolor="white", penwidth=1.0];
+    edge [fontname="Inter", fontsize=9, color="#555555", penwidth=1.0, arrowhead=vee];
+
+    // Titles
+    node [shape=none, fillcolor="transparent", penwidth=0];
+    Title [label="THE INCOMPLETENESS THEOREM: ALGORITHMIC FLOWCHART\n(Maximum Detail - Warnings Fixed)", fontsize=20, fontcolor="#111111"];
+
+    // -------------------------------------------------------------
+    // LAYER 1: ARITHMETIC PRIMITIVES
+    // -------------------------------------------------------------
+    subgraph cluster_L1 {
+        label = "LAYER 1: THE HARDWARE (Recursive Functions)";
+        style="filled";
+        color="#F5F5F5";
+        node [fillcolor="#FFFFFF", color="#BDBDBD"];
+
+        // HTML Table for structure
+        NumberStruct [shape=plain, label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+                <tr><td bgcolor="#EEEEEE"><b>NUMBER STRUCTURE</b></td></tr>
+                <tr><td>0</td></tr>
+                <tr><td>S(0) = 1</td></tr>
+                <tr><td>S(S(0)) = 2</td></tr>
+                <tr><td>S(S(S(0))) = 3</td></tr>
+            </table>
+        >];
+        
+        // Show addition logic loop
+        subgraph cluster_Add {
+            label = "Logic of x + y";
+            style="dashed";
+            color="#BDBDBD";
+            AddStart [label="Start Add(x,y)", shape=oval];
+            CheckZero [label="Is y == 0?", shape=diamond];
+            ReturnX [label="Return x", shape=oval];
+            Recurse [label="Return S(Add(x, y-1))", shape=rect];
+            
+            AddStart -> CheckZero;
+            CheckZero -> ReturnX [xlabel="Yes"];
+            CheckZero -> Recurse [xlabel="No"];
+        }
+    }
+
+    // -------------------------------------------------------------
+    // LAYER 2: ENCODING (The Prime Tree)
+    // -------------------------------------------------------------
+    subgraph cluster_L2 {
+        label = "LAYER 2: THE ENCODER (Formula to Number)";
+        style="filled";
+        color="#E3F2FD";
+        node [fillcolor="#FFFFFF", color="#64B5F6"];
+
+        Formula [shape=plain, label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#FFFFFF">
+                <tr><td bgcolor="#BBDEFB"><b>FORMULA</b></td><td>¬</td><td>(</td><td>0</td><td>=</td><td>0</td><td>)</td></tr>
+            </table>
+        >];
+
+        SymbolMap [shape=plain, label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="#FFFFFF">
+                <tr><td colspan="2" bgcolor="#BBDEFB"><b>SYMBOL MAP</b></td></tr>
+                <tr><td>Symbol</td><td>Code</td></tr>
+                <tr><td>¬</td><td>7</td></tr>
+                <tr><td>(</td><td>13</td></tr>
+                <tr><td>0</td><td>1</td></tr>
+                <tr><td>=</td><td>5</td></tr>
+                <tr><td>)</td><td>15</td></tr>
+            </table>
+        >];
+        
+        Primes [shape=plain, label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="#FFFFFF">
+                <tr><td colspan="6" bgcolor="#BBDEFB"><b>PRIMES</b></td></tr>
+                <tr><td>2</td><td>3</td><td>5</td><td>7</td><td>11</td><td>13</td></tr>
+            </table>
+        >];
+        
+        Calculations [shape=plain, label=<
+            <table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="#FFFFFF">
+                <tr><td bgcolor="#BBDEFB"><b>CALCULATION</b></td></tr>
+                <tr><td>2<sup>7</sup> = 128</td></tr>
+                <tr><td>3<sup>13</sup> = 1,594,323</td></tr>
+                <tr><td>5<sup>1</sup> = 5</td></tr>
+                <tr><td>7<sup>5</sup> = 16,807</td></tr>
+                <tr><td>11<sup>1</sup> = 11</td></tr>
+                <tr><td>13<sup>15</sup> = ...</td></tr>
+            </table>
+        >];
+        
+        Result [label="FINAL NUMBER N\n(Product of all above)", shape=circle, fillcolor="#BBDEFB"];
+
+        Formula -> SymbolMap;
+        SymbolMap -> Calculations [xlabel="exponents"];
+        Primes -> Calculations [xlabel="bases"];
+        Calculations -> Result;
+    }
+
+    // -------------------------------------------------------------
+    // LAYER 3: PROOF CHECKER (The Algorithm)
+    // -------------------------------------------------------------
+    subgraph cluster_L3 {
+        label = "LAYER 3: THE PROOF CHECKER (IsProof Function)";
+        style="filled";
+        color="#E8F5E9";
+        node [fillcolor="#FFFFFF", color="#81C784"];
+
+        StartProof [label="Start: CheckProof(x, y)", shape=oval, fillcolor="#C8E6C9"];
+        Decode [label="Factorize x into list L = [s₁, s₂, ... sₙ]", shape=rect];
+        
+        // The Loop
+        InitLoop [label="i = 1", shape=rect];
+        LoopCond [label="Is i <= n?", shape=diamond];
+        
+        StepCheck [label="Check Step sᵢ", shape=rect];
+        IsAxiom [label="Is sᵢ an Axiom?", shape=diamond];
+        IsMP [label="Does ∃j,k < i s.t.\nsₖ = (sⱼ -> sᵢ)?", shape=diamond, fontsize=9];
+        
+        Invalid [label="RETURN FALSE\n(Not a proof)", shape=oval, fillcolor="#FFCDD2"];
+        
+        NextIter [label="i = i + 1", shape=rect];
+
+        FinalCheck [label="Is sₙ == y?", shape=diamond];
+        ReturnTrue [label="RETURN TRUE\n(Valid Proof)", shape=oval, fillcolor="#C8E6C9"];
+
+        StartProof -> Decode -> InitLoop -> LoopCond;
+        LoopCond -> StepCheck [xlabel="Yes"];
+        StepCheck -> IsAxiom;
+        IsAxiom -> NextIter [xlabel="Yes"];
+        IsAxiom -> IsMP [xlabel="No"];
+        IsMP -> NextIter [xlabel="Yes"];
+        IsMP -> Invalid [xlabel="No"];
+        NextIter -> LoopCond;
+        LoopCond -> FinalCheck [xlabel="No"];
+        FinalCheck -> ReturnTrue [xlabel="Yes"];
+        FinalCheck -> Invalid [xlabel="No"];
+    }
+
+    // -------------------------------------------------------------
+    // LAYER 4: SUBSTITUTION (The String Manipulator)
+    // -------------------------------------------------------------
+    subgraph cluster_L4 {
+        label = "LAYER 4: SUBSTITUTION ALGORITHM (sub(n,k))";
+        style="filled";
+        color="#F3E5F5";
+        node [fillcolor="#FFFFFF", color="#BA68C8"];
+
+        SubStart [label="Start: sub(n, k)", shape=oval, fillcolor="#E1BEE7"];
+        SubDecode [label="Decode n -> List L", shape=rect];
+        
+        SubInit [label="j = 1\nNewList = []", shape=rect];
+        SubCond [label="Is j <= len(L)?", shape=diamond];
+        
+        ReadChar [label="Char c = L[j]", shape=rect];
+        IsVar [label="Is c == 17 ('v')?", shape=diamond];
+        
+        GenNum [label="Convert k to Nuemral\n[S, S, ... 0]", shape=rect];
+        AppendNum [label="Append Numeral seq\nto NewList", shape=rect];
+        
+        AppendChar [label="Append c to NewList", shape=rect];
+        
+        SubNext [label="j = j + 1", shape=rect];
+        SubRecalc [label="Calculate Product(NewList)", shape=rect];
+        SubRet [label="Return New Number", shape=oval, fillcolor="#E1BEE7"];
+
+        SubStart -> SubDecode -> SubInit -> SubCond;
+        SubCond -> ReadChar [xlabel="Yes"];
+        ReadChar -> IsVar;
+        IsVar -> GenNum [xlabel="Yes"];
+        GenNum -> AppendNum -> SubNext;
+        IsVar -> AppendChar [xlabel="No"];
+        AppendChar -> SubNext;
+        SubNext -> SubCond;
+        SubCond -> SubRecalc [xlabel="No"];
+        SubRecalc -> SubRet;
+    }
+
+    // -------------------------------------------------------------
+    // LAYER 5: DIAGONAL & CRASH (The Logic)
+    // -------------------------------------------------------------
+    subgraph cluster_L5 {
+        label = "LAYER 5 & 6: DIAGONAL LOOP & LOGIC CRASH";
+        style="filled";
+        color="#FFF3E0";
+        node [fillcolor="#FFFFFF", color="#FFB74D"];
+
+        PredU [label="PREDICATE U(v)\nCode: u", shape=note];
+        DiagOp [label="Operation: sub(u, u)", shape=component];
+        ResultG [label="Sentence G\nThe result of sub(u,u)", shape=note];
+        
+        PredU -> DiagOp [xlabel="feeds as template\nAND as value"];
+        DiagOp -> ResultG [xlabel="creates"];
+
+        Consistency [label="Consistency Check\nDoes T ⊢ G?", shape=diamond, fillcolor="#FFE0B2"];
+        
+        ResultG -> Consistency;
+
+        StateInconsistent [label="INCONSISTENT SYSTEM\n(Proves P and ¬P)", shape=rect, fillcolor="#FFCDD2"];
+        StateIncomplete [label="INCOMPLETE SYSTEM\n(G is True but Unprovable)", shape=rect, fillcolor="#C8E6C9"];
+
+        Consistency -> StateInconsistent [xlabel="Yes (Proof Exists)"];
+        Consistency -> StateIncomplete [xlabel="No (No Proof)"];
+    }
+
+    Result -> SubStart [style=dashed, xlabel="uses arithmetic"];
+    ReturnTrue -> Consistency [style=dashed, xlabel="defines proof"];
+}

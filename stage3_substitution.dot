@@ -1,0 +1,79 @@
+digraph Stage3 {
+    rankdir=TB;
+    nodesep=0.6;
+    splines=ortho;
+    fontname="Inter";
+    pad=0.2;
+    
+    node [fontname="Inter", fontsize=11, shape=plain, style=filled, fillcolor="white"];
+    edge [fontname="Inter", fontsize=10, color="#555555", penwidth=1.2];
+
+    Title [shape=plaintext, label="STAGE 3: THE SUBSTITUTION TOOL\n(How Numbers Talk About Numbers)", fontsize=20];
+
+    // 1. Just a Function
+    FuncDef [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#F3E5F5">
+            <tr><td colspan="2" bgcolor="#8E24AA"><font color="white"><b>THE FUNCTION: sub( n, k )</b></font></td></tr>
+            <tr>
+                <td><b>Goal:</b></td>
+                <td>Take formula #n, find 'v', put number k in it.</td>
+            </tr>
+            <tr>
+                <td><b>Inputs:</b></td>
+                <td><b>n</b> (A Formula Code)<br/><b>k</b> (A Number to insert)</td>
+            </tr>
+        </table>
+    >];
+
+    // 2. The Mechanics
+    Mechanics [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#E1BEE7">
+            <tr><td colspan="3" bgcolor="#AB47BC"><font color="white"><b>VISUAL TRACE</b></font></td></tr>
+            <tr><td colspan="3"><b>Example: sub( Code("v=0"), 1 )</b></td></tr>
+            
+            <tr>
+                <td><b>Step 1: Decode n</b></td>
+                <td>Input n = 2<sup>17</sup> · 3<sup>5</sup> · 5<sup>1</sup></td>
+                <td>List: <b>[17, 5, 1]</b><br/>(17='v', 5='=', 1='0')</td>
+            </tr>
+            
+            <tr>
+                <td><b>Step 2: Find 'v'</b></td>
+                <td>Scan list...</td>
+                <td>Found <b>17</b> at index 1.</td>
+            </tr>
+            
+            <tr>
+                <td><b>Step 3: Convert k</b></td>
+                <td>k = 1</td>
+                <td>Convert to S(0)<br/>List: <b>[3, 13, 1, 15]</b></td>
+            </tr>
+            
+            <tr>
+                <td><b>Step 4: Splice</b></td>
+                <td>Remove 17.<br/>Insert [3,13,1,15]</td>
+                <td>Result List:<br/><b>[3, 13, 1, 15, 5, 1]</b></td>
+            </tr>
+            
+            <tr>
+                <td><b>Step 5: Re-Encode</b></td>
+                <td>Zip with Primes</td>
+                <td><b>New Number = 2<sup>3</sup> · 3<sup>13</sup> ...</b></td>
+            </tr>
+        </table>
+    >];
+
+    // 3. The Power
+    Significance [label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#F8BBD0">
+            <tr><td bgcolor="#C2185B"><font color="white"><b>WHY THIS MATTERS</b></font></td></tr>
+            <tr><td>This function allows arithmetic to "Edit Text".</td></tr>
+            <tr><td>Because it is just list manipulation...</td></tr>
+            <tr><td><b>It is a valid Arithmetic Function.</b></td></tr>
+            <tr><td>The system T can "run" this function inside itself.</td></tr>
+        </table>
+    >];
+
+    FuncDef -> Mechanics [label="execution"];
+    Mechanics -> Significance [label="implication"];
+}
